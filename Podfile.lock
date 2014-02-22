@@ -1,0 +1,15 @@
+PODS:
+  - Nodelike (0.1.0)
+
+DEPENDENCIES:
+  - Nodelike (from `https://github.com/node-app/Nodelike.git`)
+
+EXTERNAL SOURCES:
+  Nodelike:
+    :git: https://github.com/node-app/Nodelike.git
+    :submodules: true
+
+SPEC CHECKSUMS:
+  Nodelike: 1b3600e474d1b6a283d9abdff45012ee9e6687f1
+
+COCOAPODS: 0.29.0

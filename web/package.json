@@ -1,0 +1,20 @@
+{
+    "name": "node-appkit",
+    "main": "",
+    "node-main": "index.js",
+    "node-baseurl": "node://localhost/",
+    "description": "Basic node demo app",
+    "author": "domabo",
+    "version": "0.0.1",
+    "repository": "https://github.com/domabo/nodmob",
+    "dependencies": {
+    },
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "window": {
+        "title": "Bootstrap on nodeAppKit",
+        "width": 800,
+        "height": 600
+    }
+}

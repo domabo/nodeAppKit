@@ -1,0 +1,13 @@
+{
+    "name": "nodeAppKit",
+    "description": "node App Kit ",
+    "author": "domabo",
+    "version": "0.0.1",
+    "repository": "https://github.com/domabo/nodeAppKit",
+    "dependencies": {
+        "promise" : "*"
+    },
+    "engines": {
+        "node": ">= 0.10.0"
+    }
+}
