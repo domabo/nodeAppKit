@@ -30,13 +30,10 @@
     _context = [[NLContext alloc] initWithVirtualMachine:vm];
     _context[@"process"][@"env"][@"NODE_PATH"] = resPaths;
     _context[@"process"][@"workingDirectory"] = webPath;
-    
     _context[@"process"][@"createWindow"] = ^(NSString* url, NSString* title, int width, int height){
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [NAKWebView createWindow: url title:title width:width height:height];
               [NAKWebView closeSplashWindow];
-            
         });
     };
    

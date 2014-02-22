@@ -35,15 +35,26 @@
 {
     NSLog(@"Loading URL %@", self.request.URL);
     
-    __block JSValue *owinContext = [NAKOWIN createOwinContext];
+    __block JSValue *owin = [NAKOWIN createOwinContext];
     
     NSString *url = [self.request.URL absoluteString];
     
-    owinContext[@"owin.RequestPath"] = url;
+    owin[@"Request"][@"Path"] = url;
+    owin[@"Request"][@"PathBase"] = @"";
+    owin[@"Request"][@"Headers"]  = self.request.allHTTPHeaderFields;
+    owin[@"Request"][@"Method"] = self.request.HTTPMethod;
+    owin[@"Request"][@"IsLocal"] = @TRUE;
+  
+    if ([self.request.HTTPMethod isEqualToString: @"POST"])
+    {
+       NSString *body = [NSString stringWithUTF8String:[self.request.HTTPBody bytes]];
+        owin[@"Request"][@"Headers"][@"Content-Length"] = [[NSNumber numberWithInteger:body.length] stringValue];
+       [owin[@"Request"][@"Body"][@"setData"] callWithArguments:@[body]];
+    }
     
     __weak NAKURLProtocolCustom *protocol = self;
     
-    [NAKOWIN invokeAppFunc:owinContext callBack:^ void (id error, id value){
+    [NAKOWIN invokeAppFunc:owin callBack:^ void (id error, id value){
         
        if (error != [NSNull null])
         {
@@ -53,10 +64,10 @@
         }
         else
         {
-            NSDictionary *headers = [owinContext[@"owin.ResponseHeaders"] toDictionary];
-            NSString *version = [owinContext[@"owin.ResponseProtocol"] toString];
-            NSString *dataString = [owinContext[@"owin.ResponseBody"] toString];
-            NSInteger statusCode = [[owinContext[@"owin.ResponseStatusCode"] toString] longLongValue] ;
+            NSDictionary *headers = [owin[@"Response"][@"Headers"] toDictionary];
+            NSString *version = [owin[@"Response"][@"rotocol"] toString];
+            NSString *dataString = [owin[@"Response"][@"Body"] toString];
+            NSInteger statusCode = [[owin[@"Response"][@"StatusCode"] toString] longLongValue] ;
             
             if (statusCode == 302)
             {
@@ -81,7 +92,6 @@
                 [[protocol client] URLProtocol:protocol didLoadData:data];
                 [[protocol client] URLProtocolDidFinishLoading:protocol];
             }
-            
         }
     } ];
 }

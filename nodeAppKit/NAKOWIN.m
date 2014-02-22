@@ -14,19 +14,20 @@ static JSContext *_context = nil;
 + (void)attachToContext:(JSContext *)context
 {
     _context = context;
+    
      [_context evaluateScript:
-     @"require('owin');\n"
+      @"process.owinJS = require('owin.js');\n"
         ];
 }
 
 + (JSValue*) createOwinContext
 {
-    return [_context evaluateScript:@"process.owin.createContext()"];
+    return [_context evaluateScript:@"process.owinJS.createContext()"];
 }
 
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack
 {
-      [_context[@"process"][@"owin"][@"invokeContext"] callWithArguments:@[owinContext, callBack]];
+      [_context[@"process"][@"owinJS"][@"invokeContext"] callWithArguments:@[owinContext, callBack]];
 }
 
 @end

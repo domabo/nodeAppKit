@@ -1,4 +1,4 @@
-var owin = require('owin');
+var browser = require('browser');
 var Promise = require('promise');
 
 nodeApp = function (request, response) {
@@ -7,15 +7,15 @@ nodeApp = function (request, response) {
 }
 
 nodeFunc = function (owin, callback) {
-    owin.response.writeHead(200, {"Content-Type": "text/plain"});
-    owin.response.end("Hello World\n");
+    owin.Response.writeHead(200, {"Content-Type": "text/plain"});
+    owin.Response.end("Hello World\n");
     callback(null);
 }
 
 appFunc = function (owin) {
     var myPromise = new Promise(function (resolve, reject) {
-                                owin.response.writeHead(200, {"Content-Type": "text/plain"});
-                                owin.response.end("Hello World\n");
+                                owin.Response.writeHead(200, {"Content-Type": "text/plain"});
+                                owin.Response.end("Hello World\n");
                                 resolve("OK");
                                 });
     
@@ -23,7 +23,7 @@ appFunc = function (owin) {
 }
 
 // Start Server
-//var server = owin.createServer(nodeApp);
-var server = owin.createOwinServer(nodeFunc);
-//var server = owin.createAppFuncServer(appFunc);
+//var server = browser.createServer(nodeApp);
+var server = browser.createOwinServer(nodeFunc);
+//var server = browser.createAppFuncServer(appFunc);
 server.listen();

@@ -18,13 +18,14 @@
 		E47E810818B04FEE001E8321 /* NAKURLProtocolCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = E47E810018B04FEE001E8321 /* NAKURLProtocolCustom.m */; };
 		E47E810918B04FEE001E8321 /* NAKURLProtocolLocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = E47E810218B04FEE001E8321 /* NAKURLProtocolLocalFile.m */; };
 		E47E810D18B05033001E8321 /* nodeappkit.js in Resources */ = {isa = PBXBuildFile; fileRef = E47E810B18B05033001E8321 /* nodeappkit.js */; };
-		E47E810E18B05033001E8321 /* owin.js in Resources */ = {isa = PBXBuildFile; fileRef = E47E810C18B05033001E8321 /* owin.js */; };
+		E47E810E18B05033001E8321 /* browser.js in Resources */ = {isa = PBXBuildFile; fileRef = E47E810C18B05033001E8321 /* browser.js */; };
 		E47E811018B055A5001E8321 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47E810F18B055A5001E8321 /* WebKit.framework */; };
 		E47E811218B055E2001E8321 /* static in Resources */ = {isa = PBXBuildFile; fileRef = E47E811118B055E2001E8321 /* static */; };
 		E47E811418B055EC001E8321 /* web in Resources */ = {isa = PBXBuildFile; fileRef = E47E811318B055EC001E8321 /* web */; };
 		E48A842E18B0983C00E293A1 /* nodeAppKitLogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E48A842D18B0983C00E293A1 /* nodeAppKitLogo.icns */; };
 		E4E17D0818B6C4C10081A28E /* node_modules in Resources */ = {isa = PBXBuildFile; fileRef = E4E17D0718B6C4C10081A28E /* node_modules */; };
 		E4E17D0A18B6C5020081A28E /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = E4E17D0918B6C5020081A28E /* package.json */; };
+		E4E17D0C18B843310081A28E /* owin.js in Resources */ = {isa = PBXBuildFile; fileRef = E4E17D0B18B843310081A28E /* owin.js */; };
 		E4F4F1B018B2DC1A00FE5D29 /* cancellation.js in Resources */ = {isa = PBXBuildFile; fileRef = E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */; };
 /* End PBXBuildFile section */
 
@@ -54,13 +55,14 @@
 		E47E810118B04FEE001E8321 /* NAKURLProtocolLocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAKURLProtocolLocalFile.h; sourceTree = "<group>"; };
 		E47E810218B04FEE001E8321 /* NAKURLProtocolLocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKURLProtocolLocalFile.m; sourceTree = "<group>"; };
 		E47E810B18B05033001E8321 /* nodeappkit.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nodeappkit.js; path = lib/nodeappkit.js; sourceTree = "<group>"; };
-		E47E810C18B05033001E8321 /* owin.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = owin.js; path = lib/owin.js; sourceTree = "<group>"; };
+		E47E810C18B05033001E8321 /* browser.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = browser.js; path = lib/browser.js; sourceTree = "<group>"; };
 		E47E810F18B055A5001E8321 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E47E811118B055E2001E8321 /* static */ = {isa = PBXFileReference; lastKnownFileType = folder; path = static; sourceTree = "<group>"; };
 		E47E811318B055EC001E8321 /* web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web; sourceTree = "<group>"; };
 		E48A842D18B0983C00E293A1 /* nodeAppKitLogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = nodeAppKitLogo.icns; path = ../nodeAppKitLogo.icns; sourceTree = "<group>"; };
 		E4E17D0718B6C4C10081A28E /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = node_modules; sourceTree = "<group>"; };
 		E4E17D0918B6C5020081A28E /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
+		E4E17D0B18B843310081A28E /* owin.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = owin.js; sourceTree = "<group>"; };
 		E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = cancellation.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,8 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				E47E810B18B05033001E8321 /* nodeappkit.js */,
-				E47E810C18B05033001E8321 /* owin.js */,
+				E47E810C18B05033001E8321 /* browser.js */,
 				E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */,
+				E4E17D0B18B843310081A28E /* owin.js */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -221,7 +224,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4E17D0A18B6C5020081A28E /* package.json in Resources */,
-				E47E810E18B05033001E8321 /* owin.js in Resources */,
+				E47E810E18B05033001E8321 /* browser.js in Resources */,
+				E4E17D0C18B843310081A28E /* owin.js in Resources */,
 				E47E811418B055EC001E8321 /* web in Resources */,
 				E47E811218B055E2001E8321 /* static in Resources */,
 				E4E17D0818B6C4C10081A28E /* node_modules in Resources */,
