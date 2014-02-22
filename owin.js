@@ -51,29 +51,52 @@ exports.createContext = function() {
     owin.Request.QueryString ="";
     owin.Request.Scheme = "http";
     
-    owin.Request.Body = new StringReader;
+    // REQUEST STREAM
+    var Readable = stream.Readable;
     
+    function RequestStream() {
+        this.data = "";
+    }
+    
+    util.inherits(RequestStream, Readable);
+    
+    RequestStream.prototype.setData = function(str)
+    {
+        Readable.call(this, { highWaterMark: str.length});
+        this.data = str;
+    }
+    
+    RequestStream.prototype._read = function(size) {
+        this.push(this.data);
+        this.push(null);
+     }
+    
+    owin.Request.Body = new RequestStream;
+   
+    // RESPONSE STREAM
     var Writable = stream.Writable;
     
-    function responseStream() {
+    function ResponseStream() {
         Writable.call(this, {decodeStrings: false});
         this.bodyChunks = []
     }
     
-    util.inherits(responseStream, Writable);
+    util.inherits(ResponseStream, Writable);
     
-    responseStream.prototype._write = function(chunk, enc, next) {
+    ResponseStream.prototype._write = function(chunk, enc, next) {
         this.bodyChunks.push(chunk);
         next();
     }
     
-    responseStream.prototype.getBody = function() {
+    ResponseStream.prototype.getBody = function() {
         return this.bodyChunks.join('');
     }
  
-    owin.Response.Body = new responseStream;
+    owin.Response.Body = new ResponseStream;
+    
+    //OTHER RESPONSE ELEMENTS
  
-     var tokenSource = cancellationTokenSource();
+    var tokenSource = cancellationTokenSource();
     
     owin.Response.Headers = {};
     owin.Response.StatusCode = "200";
@@ -220,43 +243,4 @@ exports.owinConnect = function(connectApp) {
         nodeCallBack(null);
     }
 };
-
-function StringReader() {
-    data = "";
-}
-
-util.inherits(StringReader, stream);
-
-StringReader.prototype.setData = function(str)
-{
-    console.log(this.data);
-
-    this.data = str;
-    console.log(this.data);
-}
-
-StringReader.prototype.open =
-StringReader.prototype.resume = function () {
-    if (this.encoding && Buffer.isBuffer(this.data)) {
-        this.emit('data', this.data.toString(this.encoding));
-    }
-    else {
-        this.emit('data', this.data);
-    }
-    this.emit('end');
-    this.emit('close');
-}
-
-StringReader.prototype.setEncoding = function (encoding) {
-    this.encoding = encoding;
-}
-
-
-StringReader.prototype.pause = function () {
-}
-
-StringReader.prototype.destroy = function () {
-    delete this.data;
-}
-
 
