@@ -6,8 +6,10 @@
     "description": "Basic node demo app",
     "author": "domabo",
     "version": "0.0.1",
-    "repository": "https://github.com/domabo/nodmob",
+    "repository": "https://github.com/OwinJS/nodeAppKit",
     "dependencies": {
+        "razor": "git://github.com/OwinJS/RazorJS.git",
+        "owinjs": "git://github.com/OwinJS/OwinJS.git"
     },
     "engines": {
         "node": ">= 0.10.0"

@@ -37,7 +37,7 @@
    
     
     if ([urlDecode exists]) {
-        NSLog(@"Loading File %@", [urlDecode resourcePath]);
+        NSLog(@"%@", [urlDecode fileName]);
         
         NSData *data =  [NSData dataWithContentsOfFile:[urlDecode resourcePath]];
         

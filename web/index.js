@@ -1,29 +1,48 @@
-var browser = require('browser');
+var Browser = require('browser');
 var Promise = require('promise');
+var OwinJS = require('OwinJS');
+var owinAppBuilder = OwinJS.AppBuilder;
+var owinRazor = OwinJS.Razor;
 
-nodeApp = function (request, response) {
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World\n");
-}
+var app = new owinAppBuilder;
+var app2 = new owinAppBuilder;
 
-nodeFunc = function (owin, callback) {
-    owin.Response.writeHead(200, {"Content-Type": "text/plain"});
-    owin.Response.end("Hello World\n");
-    callback(null);
-}
+app.use( function(next, callback){
+        next(function(err, result){callback(err, result)});
+        });
 
-appFunc = function (owin) {
-    var myPromise = new Promise(function (resolve, reject) {
-                                owin.Response.writeHead(200, {"Content-Type": "text/plain"});
-                                owin.Response.end("Hello World\n");
-                                resolve("OK");
-                                });
-    
-    return myPromise;
-}
+app.use(function(next, callback){
+        
+        var owin = this;
+        path = 'index.js.html';
+        
+        var nextCallback = function(){
+            next(function(err, result){callback(err, result)});
+        };
+        
+        owinRazor.renderView(path, owin, nextCallback);
+        });
 
-// Start Server
-//var server = browser.createServer(nodeApp);
-var server = browser.createOwinServer(nodeFunc);
-//var server = browser.createAppFuncServer(appFunc);
-server.listen();
+app.use( function(next, callback){
+        next(function(err, result){callback(err, result)});
+        });
+
+
+app2.use(function(next){
+        var owin = this;
+        path = 'index.js.html';
+         return owinRazor.renderViewAsync(path, owin).then(function(){ return next()});
+         });
+
+Browser.createOwinServer(app2.build()).listen();
+
+
+/*browser.createOwinServer(function (owin, callback) {
+                         path = 'index.js.html';
+                        Razor.renderView(path, owin, callback);
+                  
+                     }).listen(); */
+
+
+
+//setTimeout(function() {console.log("hello world")},3000);
