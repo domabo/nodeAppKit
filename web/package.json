@@ -9,7 +9,8 @@
     "repository": "https://github.com/OwinJS/nodeAppKit",
     "dependencies": {
         "razor": "git://github.com/OwinJS/RazorJS.git",
-        "owinjs": "git://github.com/OwinJS/OwinJS.git"
+        "owinjs": "git://github.com/OwinJS/OwinJS.git",
+        "promise": "*"
     },
     "engines": {
         "node": ">= 0.10.0"

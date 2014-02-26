@@ -16,7 +16,7 @@ static JSContext *_context = nil;
     _context = context;
     
      [_context evaluateScript:
-      @"process.owinJS = require('owinServer.js');\n"
+      @"process.owinJS = require('owinserver.js');\n"
         ];
 }
 
