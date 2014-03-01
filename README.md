@@ -1,4 +1,4 @@
-![nodeAppKit](https://raw.github.com/domabo/nodeAppKit/master/static/domaba/images/nodeAppKit.png)
+![nodeAppKit](https://raw.github.com/owinJS/nodeAppKit/master/static/domaba/images/nodeAppKit.png)
 
 ## Overview
 
@@ -52,7 +52,7 @@ It is conceptually similar to node-webkit, but runs on mobile platforms and with
 ### How to Use
 Clone the project
 
-`git clone https://github.com/domabo/node-appkit.git`
+`git clone https://github.com/OwinJS/nodeAppKit.git`
 
 Get the Cocoa Pod dependencies
 
