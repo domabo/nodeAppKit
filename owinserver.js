@@ -3,6 +3,8 @@ var util = require('util');
 var stream = require('stream');
 var cancellationTokenSource = require('cancellation');
 var Buffer = require('buffer').Buffer;
+//@ sourceURL=some-url-goes-here
+
 
 /* EXPORTS:
  * (owinserver) createOwinServer(AppFunc)

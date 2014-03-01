@@ -5,6 +5,9 @@ var owinAppBuilder = OwinJS.AppBuilder;
 var owinRazor = OwinJS.Razor;
 
 var app = new owinAppBuilder;
+//@ sourceURL=filename.js
+//# sourceURL=filename.js
+
 var app2 = new owinAppBuilder;
 
 app.use( function(next, callback){
@@ -12,7 +15,6 @@ app.use( function(next, callback){
         });
 
 app.use(function(next, callback){
-        
         var owin = this;
         path = 'index.js.html';
         
@@ -26,7 +28,6 @@ app.use(function(next, callback){
 app.use( function(next, callback){
         next(function(err, result){callback(err, result)});
         });
-
 
 app2.use(function(next){
         var owin = this;
