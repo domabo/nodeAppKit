@@ -66,6 +66,8 @@
     
     [NAKOWIN invokeAppFunc:owin callBack:^ void (id error, id value){
         NSLog(@"CALLBACK");
+        NSLog([self.request.URL absoluteString]);
+        
        if (error != [NSNull null])
         {
           NSLog(@"Error occurred");

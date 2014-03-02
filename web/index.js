@@ -16,14 +16,12 @@ app.use(route);
 route.get('/', function(){
             console.log("GET: " +this.Request.Path);
             var owin = this;
-            path = 'index.js.html';
-            
-          return  owinRazor.renderViewAsync(path, this);
+            fileName = 'index.js.html';
+         
+          return  owinRazor.renderViewAsync(this, fileName);
           });
 
-
 Browser.createOwinServer(app.build()).listen();
-
 
 /*browser.createOwinServer(function (owin, callback) {
                          path = 'index.js.html';
