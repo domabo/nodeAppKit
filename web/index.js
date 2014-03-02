@@ -3,40 +3,41 @@ var Promise = require('promise');
 var OwinJS = require('OwinJS');
 var owinAppBuilder = OwinJS.AppBuilder;
 var owinRazor = OwinJS.Razor;
+var router = require('owinjs-router');
+var route = router();
 
-var app = new owinAppBuilder;
 //@ sourceURL=filename.js
 //# sourceURL=filename.js
 
-var app2 = new owinAppBuilder;
+var app = new owinAppBuilder;
 
-app.use( function(next, callback){
-        next(function(err, result){callback(err, result)});
-        });
+app.use(route);
 
-app.use(function(next, callback){
+route.getdebug('/id/{id}/', function(){
+        console.log("DEBUG: " + this.Request.Path + " :: " + JSON.stringify(this.Params));
         var owin = this;
-        path = 'index.js.html';
-        
-        var nextCallback = function(){
-            next(function(err, result){callback(err, result)});
-        };
-        
-        owinRazor.renderView(path, owin, nextCallback);
+        path = 'debug.js.html';
+        return  owinRazor.renderViewAsync(path, this);
         });
 
-app.use( function(next, callback){
-        next(function(err, result){callback(err, result)});
-        });
+route.getdebug('/', function(){
+            console.log("DEBUG2: " + this.Request.Path + " :: " + JSON.stringify(this.Params));
+            var owin = this;
+            path = 'debug.js.html';
+            return  owinRazor.renderViewAsync(path, this);
+            });
 
-app2.use(function(next){
-        var owin = this;
-        path = 'index.js.html';
-         return owinRazor.renderViewAsync(path, owin).then(function(){ return next()});
-         });
 
-Browser.createOwinServer(app2.build()).listen();
+route.get('/', function(){
+            console.log("GET: " +this.Request.Path);
+            var owin = this;
+            path = 'index.js.html';
+            
+          return  owinRazor.renderViewAsync(path, this);
+          });
 
+
+Browser.createOwinServer(app.build()).listen();
 
 /*browser.createOwinServer(function (owin, callback) {
                          path = 'index.js.html';

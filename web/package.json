@@ -8,8 +8,9 @@
     "version": "0.0.1",
     "repository": "https://github.com/OwinJS/nodeAppKit",
     "dependencies": {
-        "razor": "git://github.com/OwinJS/RazorJS.git",
-        "owinjs": "git://github.com/OwinJS/OwinJS.git",
+        "RazorJS": "git://github.com/OwinJS/RazorJS.git",
+        "OwinJS": "git://github.com/OwinJS/OwinJS.git",
+        "owinjs-router": "git://github.com/OwinJS/owinjs-router.git",
         "promise": "*"
     },
     "engines": {

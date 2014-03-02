@@ -18,7 +18,8 @@
         return NO;
     
     if (([theRequest.URL.scheme caseInsensitiveCompare:@"node"] == NSOrderedSame)
-        || ([theRequest.URL.host caseInsensitiveCompare:@"node"] == NSOrderedSame))
+        || ([theRequest.URL.host caseInsensitiveCompare:@"node"] == NSOrderedSame)
+        ||   ([theRequest.URL.scheme caseInsensitiveCompare:@"debug"] == NSOrderedSame))
     {
         return YES;
     }
@@ -37,14 +38,23 @@
     
     __block JSValue *owin = [NAKOWIN createOwinContext];
     
-    NSString *url = [self.request.URL absoluteString];
+    NSString *path = [self.request.URL relativePath];
+    NSString *query =[self.request.URL query];
     
-    owin[@"Request"][@"Path"] = url;
+    if ([path isEqualToString: @""])
+      path = @"/";
+    
+    if (query == nil)
+      query = @"";
+    
+    owin[@"Request"][@"Path"] = path;
     owin[@"Request"][@"PathBase"] = @"";
+    owin[@"Request"][@"QueryString"] = query;
     owin[@"Request"][@"Headers"]  = self.request.allHTTPHeaderFields;
     owin[@"Request"][@"Method"] = self.request.HTTPMethod;
     owin[@"Request"][@"IsLocal"] = @TRUE;
-  
+    owin[@"Request"][@"Scheme"] = [self.request.URL scheme];
+    
     if ([self.request.HTTPMethod isEqualToString: @"POST"])
     {
        NSString *body = [NSString stringWithUTF8String:[self.request.HTTPBody bytes]];
@@ -59,8 +69,6 @@
        if (error != [NSNull null])
         {
           NSLog(@"Error occurred");
-            
-            // to do return 500 error //
         }
         else
         {

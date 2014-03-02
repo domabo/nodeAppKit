@@ -196,7 +196,7 @@ static NSWindow *debugWindow = nil;
     [NSURLProtocol registerClass:[NAKURLProtocolLocalFile class]];
     [NSURLProtocol registerClass:[NAKURLProtocolCustom class]];
     
-    NSURL *url = [NSURL URLWithString:@"http://www.google.com"];
+    NSURL *url = [NSURL URLWithString:@"debug://localhost"];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [[webView mainFrame] loadRequest:requestObj];
     });
