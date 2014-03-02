@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8743BE86465547CD8E6EFCB8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EA4596A95745A8969921C8 /* libPods.a */; };
 		E434392118C1815900AC9302 /* NAKJSContextFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E434392018C1815900AC9302 /* NAKJSContextFactory.m */; };
+		E463F6FD18C3F1780079895E /* cancellation.js in Resources */ = {isa = PBXBuildFile; fileRef = E463F6FB18C3F1670079895E /* cancellation.js */; };
+		E463F6FE18C3F1810079895E /* owinserver.js in Resources */ = {isa = PBXBuildFile; fileRef = E463F6F918C3F15E0079895E /* owinserver.js */; };
 		E47E71EC18C021C500D13E0C /* NAKWebViewDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = E47E71EB18C021C500D13E0C /* NAKWebViewDebug.m */; };
 		E47E80C218B04D22001E8321 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47E80C118B04D22001E8321 /* Cocoa.framework */; };
 		E47E80CE18B04D23001E8321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E47E80CD18B04D23001E8321 /* main.m */; };
@@ -26,8 +28,6 @@
 		E47E811418B055EC001E8321 /* web in Resources */ = {isa = PBXBuildFile; fileRef = E47E811318B055EC001E8321 /* web */; };
 		E48A842E18B0983C00E293A1 /* nodeAppKitLogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E48A842D18B0983C00E293A1 /* nodeAppKitLogo.icns */; };
 		E4E17D0A18B6C5020081A28E /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = E4E17D0918B6C5020081A28E /* package.json */; };
-		E4E17D0C18B843310081A28E /* owinserver.js in Resources */ = {isa = PBXBuildFile; fileRef = E4E17D0B18B843310081A28E /* owinserver.js */; };
-		E4F4F1B018B2DC1A00FE5D29 /* cancellation.js in Resources */ = {isa = PBXBuildFile; fileRef = E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +35,8 @@
 		7CCC7CFCCC7C411FB08DA0D3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		E434391F18C1815900AC9302 /* NAKJSContextFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAKJSContextFactory.h; sourceTree = "<group>"; };
 		E434392018C1815900AC9302 /* NAKJSContextFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKJSContextFactory.m; sourceTree = "<group>"; };
+		E463F6F918C3F15E0079895E /* owinserver.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = owinserver.js; path = lib/owinserver.js; sourceTree = "<group>"; };
+		E463F6FB18C3F1670079895E /* cancellation.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = cancellation.js; path = lib/cancellation.js; sourceTree = "<group>"; };
 		E47E71EA18C021C500D13E0C /* NAKWebViewDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAKWebViewDebug.h; sourceTree = "<group>"; };
 		E47E71EB18C021C500D13E0C /* NAKWebViewDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKWebViewDebug.m; sourceTree = "<group>"; };
 		E47E80BE18B04D22001E8321 /* nodeAppKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nodeAppKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,8 +68,6 @@
 		E47E811318B055EC001E8321 /* web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web; sourceTree = "<group>"; };
 		E48A842D18B0983C00E293A1 /* nodeAppKitLogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = nodeAppKitLogo.icns; path = ../nodeAppKitLogo.icns; sourceTree = "<group>"; };
 		E4E17D0918B6C5020081A28E /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
-		E4E17D0B18B843310081A28E /* owinserver.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = owinserver.js; sourceTree = "<group>"; };
-		E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = cancellation.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,10 +167,10 @@
 		E47E810A18B05003001E8321 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				E463F6FB18C3F1670079895E /* cancellation.js */,
+				E463F6F918C3F15E0079895E /* owinserver.js */,
 				E47E810B18B05033001E8321 /* nodeappkit.js */,
 				E47E810C18B05033001E8321 /* browser.js */,
-				E4F4F1AF18B2DC1A00FE5D29 /* cancellation.js */,
-				E4E17D0B18B843310081A28E /* owinserver.js */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -240,12 +240,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E463F6FE18C3F1810079895E /* owinserver.js in Resources */,
+				E463F6FD18C3F1780079895E /* cancellation.js in Resources */,
 				E4E17D0A18B6C5020081A28E /* package.json in Resources */,
 				E47E810E18B05033001E8321 /* browser.js in Resources */,
-				E4E17D0C18B843310081A28E /* owinserver.js in Resources */,
 				E47E811418B055EC001E8321 /* web in Resources */,
 				E47E811218B055E2001E8321 /* static in Resources */,
-				E4F4F1B018B2DC1A00FE5D29 /* cancellation.js in Resources */,
 				E48A842E18B0983C00E293A1 /* nodeAppKitLogo.icns in Resources */,
 				E47E810D18B05033001E8321 /* nodeappkit.js in Resources */,
 			);
