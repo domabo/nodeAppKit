@@ -65,7 +65,7 @@
     __weak NAKURLProtocolCustom *protocol = self;
     
     [NAKOWIN invokeAppFunc:owin callBack:^ void (id error, id value){
-        
+        NSLog(@"CALLBACK");
        if (error != [NSNull null])
         {
           NSLog(@"Error occurred");

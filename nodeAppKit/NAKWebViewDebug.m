@@ -112,8 +112,7 @@
         sourceLine = [[sourceLine substringToIndex:200] stringByAppendingString:@"..."];
     }
     
-    NSLog(@"Parse error - %@baseLineNumber: %d, fileLineNumber: %@\n%@", filename, fileLineNumber, sourceLine, description);
-    NSLog(source);
+    NSLog(@"Parse error - %@fileLineNumber: %d, sourceline: %@\n%@", filename, fileLineNumber, sourceLine, description);
     
     
     currentException = @{ @"source" :source,
@@ -132,8 +131,6 @@
 - (void)webView:(WebView *)webView exceptionWasRaised:(WebScriptCallFrame *)frame sourceId:(int)
 
 sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
-    if (  debuggerStopped )
-    return;
     
     WebScriptObject* exception = [frame exception];
     
@@ -205,12 +202,20 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
             [localScope setObject:value forKey:key];
         }
         @catch (NSException * e) {
-            NSLog(@"Warning: %@", e);
+     //       NSLog(@"Warning: %@", e);
         }
         @finally {
          }
     }
     
+    [message appendString:@"Offending function:\n"];
+    [message appendFormat:@"  %d: %@\n", lineNumber, sourceLine];
+    
+    NSLog(@"%@", message);
+    
+   if (  debuggerStopped )
+   return;
+
     currentException = @{ @"source" : source,
                           @"lineNumber" : [@(lineNumber) stringValue],
                           @"sourceLine" : sourceLine,
@@ -220,16 +225,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
                           @"description" : [exception valueForKey:@"message"]};
     debuggerStopped = YES;
     
-    
-    [message appendString:@"Offending function:\n"];
-    [message appendFormat:@"  %d: %@\n", lineNumber, sourceLine];
-    
-    [message appendString:@"\nCall stack:\n"];
-    [message appendString:[callStack componentsJoinedByString:@"\n"]];
-    
-    NSLog(@"%@", message);
-    
-    double delayInSeconds = 0.1;
+        double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [NAKWebView createDebugWindow];

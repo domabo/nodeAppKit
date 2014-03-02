@@ -162,6 +162,8 @@ exports.invokeContext = function(owin, callBack) {
     process.nextTick(function() {
                             exports.emit('request-'+appId, owin, function(err, value)
                                               {
+                                         
+                                         console.log(owin.Request.Scheme + err);
                                               // Call On Sending Headers
                                               var listeners = owin.NodeAppKit.OnSendingHeaderListeners;
                                               for (var i = 0; i <  listeners.length; i++) {
