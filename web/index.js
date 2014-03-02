@@ -1,10 +1,10 @@
 var Browser = require('browser');
 var Promise = require('promise');
-var OwinJS = require('OwinJS');
-var owinAppBuilder = OwinJS.AppBuilder;
-var owinRazor = OwinJS.Razor;
+var OwinJS = require('owinjs');
 var router = require('owinjs-router');
 var route = router();
+var owinAppBuilder = OwinJS.AppBuilder;
+var owinRazor = OwinJS.Razor;
 
 //@ sourceURL=filename.js
 //# sourceURL=filename.js
@@ -13,15 +13,15 @@ var app = new owinAppBuilder;
 
 app.use(route);
 
-route.getdebug('/id/{id}/', function(){
-        console.log("DEBUG: " + this.Request.Path + " :: " + JSON.stringify(this.Params));
+route.getdebug('/id/{id}', function(){
+        console.log("DEBUG: " + this.Request.Path + " :: " + JSON.stringify(this.Model));
         var owin = this;
         path = 'debug.js.html';
         return  owinRazor.renderViewAsync(path, this);
         });
 
 route.getdebug('/', function(){
-            console.log("DEBUG2: " + this.Request.Path + " :: " + JSON.stringify(this.Params));
+            console.log("DEBUG2: " + this.Request.Path + " :: " + JSON.stringify(this.Model));
             var owin = this;
             path = 'debug.js.html';
             return  owinRazor.renderViewAsync(path, this);

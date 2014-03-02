@@ -196,7 +196,7 @@ static NSWindow *debugWindow = nil;
     [NSURLProtocol registerClass:[NAKURLProtocolLocalFile class]];
     [NSURLProtocol registerClass:[NAKURLProtocolCustom class]];
     
-    NSURL *url = [NSURL URLWithString:@"debug://localhost"];
+    NSURL *url = [NSURL URLWithString:@"debug://localhost/id/test/"];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [[webView mainFrame] loadRequest:requestObj];
     });
