@@ -22,7 +22,7 @@ route.get('/', function(){
           });
 
 Browser.createOwinServer(app.build()).listen();
-
+vvv
 /*browser.createOwinServer(function (owin, callback) {
                          path = 'index.js.html';
                         Razor.renderView(path, owin, callback);
