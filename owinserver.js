@@ -150,6 +150,7 @@ exports.invokeContext = function(owin, callBack) {
   
     //SCHEDULE ACTUAL WORK ASYNC
     process.nextTick(function() {
+                     if (exports._server)
                      exports._server.emit('request', owin, function(err, value)
                                               {
                                               // Call On Sending Headers

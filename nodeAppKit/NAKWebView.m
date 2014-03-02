@@ -140,15 +140,15 @@ static NSWindow *debugWindow = nil;
 
  }
 
-+ (void) createDebugWindow;
++ (void) createDebugWindow
 {
     
     if (debugWindow != nil) return;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-    int x = 800;
-    int y= 600;
+    int x = 1024;
+    int y= 800;
     NSRect windowRect = [[NSScreen mainScreen] frame];
     NSRect frameRect = NSMakeRect(
                                   (NSWidth(windowRect) - x)/2,
@@ -196,7 +196,7 @@ static NSWindow *debugWindow = nil;
     [NSURLProtocol registerClass:[NAKURLProtocolLocalFile class]];
     [NSURLProtocol registerClass:[NAKURLProtocolCustom class]];
     
-    NSURL *url = [NSURL URLWithString:@"debug://localhost/id/test/"];
+    NSURL *url = [NSURL URLWithString:@"debug://localhost/"];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [[webView mainFrame] loadRequest:requestObj];
     });

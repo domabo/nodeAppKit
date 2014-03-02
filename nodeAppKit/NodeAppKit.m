@@ -52,6 +52,7 @@
         JSGlobalContextRetain([context JSGlobalContextRef]);
         
         [NAKOWIN attachToContext:context];
+        
         [context evaluateScript:@"module._load(package['node-main'], null, true);"];
         [NLContext runEventLoopAsync];
     }];

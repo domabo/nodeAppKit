@@ -26,6 +26,13 @@
      _completionHandler = [jsCallback copy];
      [self createJavascriptWebView];
 }
+    
+ - (void) createCore: (void(^)(id))jsCallback
+ {
+        _completionHandler = [jsCallback copy];
+        [self createJavascriptCore];
+}
+
 
 - (void) createJavascriptCore
 {
@@ -65,7 +72,7 @@
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     
     [[webView mainFrame] loadRequest:requestObj];
-   WebScriptObject *scriptObject = [webView windowScriptObject];
+    WebScriptObject *scriptObject = [webView windowScriptObject];
     [scriptObject setValue:@"TEST" forKey:@"TEST"];
 }
 
@@ -76,6 +83,8 @@
   
     context =ctx;
     [NLContext attachToContext:ctx];
+    [debug attachToContext:ctx];
+    
     _completionHandler(context);
     _completionHandler = nil;
 }

@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Nodelike/Nodelike.h>
 
 @interface NAKWebViewDebug : NSObject{
 }
+- (void)attachToContext:(JSContext*)context;
+
 @end
