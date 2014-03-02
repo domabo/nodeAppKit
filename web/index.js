@@ -17,12 +17,12 @@ route.get('/', function(){
             console.log("GET: " +this.Request.Path);
             var owin = this;
             fileName = 'index.js.html';
-         
+         vv
           return  owinRazor.renderViewAsync(this, fileName);
           });
 
 Browser.createOwinServer(app.build()).listen();
-vvv
+
 /*browser.createOwinServer(function (owin, callback) {
                          path = 'index.js.html';
                         Razor.renderView(path, owin, callback);

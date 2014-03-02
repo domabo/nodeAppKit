@@ -12,7 +12,9 @@
 - (void) run {
    JSContextFactory = [[NAKJSContextFactory alloc] init];
     
-    [JSContextFactory create: ^ void (JSContext *context){
+     [JSContextFactory create: ^ void (JSContext *context){
+         [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
+         
    NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/web"];

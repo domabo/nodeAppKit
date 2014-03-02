@@ -49,6 +49,14 @@
 - (void)attachToContext:(JSContext*)context
     {
         context[@"process"][@"debugException"] = (NSDictionary*)^(){
+            if (currentException == nil)
+              currentException = @{ @"source" : @"",
+                                    @"lineNumber" : @"",
+                                    @"sourceLine" : @"",
+                                    @"callStack" : [[NSMutableArray alloc] init],
+                                    @"locals" : [[NSMutableArray alloc] init],
+                                  @"exception" : @"",
+                                  @"description" : @""};
             NSLog(@"DEBUG");
             return currentException;
             

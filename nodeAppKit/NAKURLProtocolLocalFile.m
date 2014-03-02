@@ -37,9 +37,7 @@
    
     
     if ([urlDecode exists]) {
-        NSLog(@"%@", [urlDecode fileName]);
-        
-        NSData *data =  [NSData dataWithContentsOfFile:[urlDecode resourcePath]];
+         NSData *data =  [NSData dataWithContentsOfFile:[urlDecode resourcePath]];
         
         NSURLResponse *response = [[NSURLResponse alloc] initWithURL:[[self request] URL]
                                                             MIMEType:[urlDecode mimeType]
@@ -49,6 +47,8 @@
         [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
         [[self client] URLProtocol:self didLoadData:data];
         [[self client] URLProtocolDidFinishLoading:self];
+        NSLog(@"%@", [urlDecode fileName]);
+        
         
     }
     else {

@@ -33,7 +33,6 @@
                                                        
     [[NSApplication sharedApplication] setMainMenu:menu];
     
-    [NAKWebView createSplashWindow: @"internal://localhost/domaba/views/StartupSplash.html" width:800 height:600];
     
     
     @autoreleasepool {
