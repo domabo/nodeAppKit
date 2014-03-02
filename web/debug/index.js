@@ -13,6 +13,27 @@ var app = new owinAppBuilder;
 
 app.use(route);
 
+route.getdebug('/', function(){
+        console.log("DEBUG: ");
+        var owin = this;
+        path = 'debug.js.html';
+               return  owinRazor.renderViewAsync(path, this);
+               owin.Response.writeHead(200, {"Content-Type" : "text/html"});
+               owin.Response.end("<h1>ERROR<h1>");
+               console.log("DEBUGEND: " );
+               
+               return Promise.from(null);
+      //  return  owinRazor.renderViewAsync(path, this);
+        });
+
+/*route.getdebug('/', function(){
+            var owin = this;
+            owin.Model.debugException = process.debugException;
+            path = 'debug.js.html';
+            return  owinRazor.renderViewAsync(path, this);
+            });*/
+
+
 route.get('/', function(){
             console.log("GET: " +this.Request.Path);
             var owin = this;

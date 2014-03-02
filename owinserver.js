@@ -18,22 +18,24 @@ var Buffer = require('buffer').Buffer;
  *
  */
 
-function _OwinNodeServer(NodeFunc) {
-    if (!(this instanceof _OwinNodeServer)) return new _OwinNodeServer(NodeFunc);
-    
+owinServer = function(){};
+util.inherits(owinServer, events.EventEmitter);
+
+exports = module.exports = new owinServer;
+
+var server = owinServer.prototype;
+
+exports._addServer = function (NodeFunc, appId) {
     if (NodeFunc) {
-        this.addListener('request', NodeFunc);
-    }
+         exports.addListener('request-'+appId, NodeFunc);
+       }
 }
 
-// Currently single server but eventually could support array
-exports._server = null;
-
-util.inherits(_OwinNodeServer, events.EventEmitter);
-
-exports.createOwinServer = function(nodeFunc) {
-    exports._server =  new _OwinNodeServer(nodeFunc);
-    return exports._server;
+exports.createOwinServer = function(nodeFunc, appId) {
+    if (!appId)
+        appId = "default";
+    exports._addServer(nodeFunc, appId);
+    return exports;
 }
 
 exports.createContext = function() {
@@ -139,6 +141,14 @@ exports.createContext = function() {
 };
 
 exports.invokeContext = function(owin, callBack) {
+    var appId = owin.AppId;
+    if (!appId)
+        appId = "default";
+    
+    if (owin.Request.Scheme == "debug")
+        appId= "debug";
+    
+    console.log(owin.Request.Path + " " + appId);
     
     owin.NodeAppKit.OnSendingHeaderListeners = [];
     
@@ -150,8 +160,7 @@ exports.invokeContext = function(owin, callBack) {
   
     //SCHEDULE ACTUAL WORK ASYNC
     process.nextTick(function() {
-                     if (exports._server)
-                     exports._server.emit('request', owin, function(err, value)
+                            exports.emit('request-'+appId, owin, function(err, value)
                                               {
                                               // Call On Sending Headers
                                               var listeners = owin.NodeAppKit.OnSendingHeaderListeners;

@@ -92,8 +92,10 @@
     
     
 - (void)webView:(WebView *)webView failedToParseSource:(NSString *)source baseLineNumber:(unsigned int)baseLineNumber fromURL:(NSURL *)url withError:(NSError *)error forWebFrame:(WebFrame *)webFrame {
+    
     if (  debuggerStopped )
-      return;
+    return;
+    
     NSDictionary* userInfo = [error userInfo];
     NSNumber* fileLineNumber = [userInfo objectForKey:@"WebScriptErrorLineNumber"];
     NSString* description = [userInfo objectForKey:@"WebScriptErrorDescription"];
@@ -103,13 +105,16 @@
         filename = [NSString stringWithFormat:@"filename: %@, ", [NAKWebViewDebug filenameForURL:url]];
     }
     
-    NSLog(@"Parse error - %@baseLineNumber: %d, fileLineNumber: %@\n%@", filename, baseLineNumber, fileLineNumber, description);
     
     NSArray* sourceLines = [source componentsSeparatedByString:@"\n"];
     NSString* sourceLine = [sourceLines objectAtIndex:([fileLineNumber intValue] - 1)];
     if ([sourceLine length] > 200) {
         sourceLine = [[sourceLine substringToIndex:200] stringByAppendingString:@"..."];
     }
+    
+    NSLog(@"Parse error - %@baseLineNumber: %d, fileLineNumber: %@\n%@", filename, fileLineNumber, sourceLine, description);
+    NSLog(source);
+    
     
     currentException = @{ @"source" :source,
                           @"lineNumber" : [fileLineNumber stringValue],
@@ -120,15 +125,15 @@
                           @"description" : description};
     debuggerStopped = YES;
     [NAKWebView createDebugWindow];
-
-      
+    
+    
 }
     
 - (void)webView:(WebView *)webView exceptionWasRaised:(WebScriptCallFrame *)frame sourceId:(int)
 
 sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
-   if (  debuggerStopped )
-   return;
+    if (  debuggerStopped )
+    return;
     
     WebScriptObject* exception = [frame exception];
     
@@ -156,8 +161,8 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     }
     
     
-   if (([[exception valueForKey:@"message"] rangeOfString:@"no such file or directory"].location != NSNotFound) && (tryFilePackage))
-     return;
+    if (([[exception valueForKey:@"message"] rangeOfString:@"no such file or directory"].location != NSNotFound) && (tryFilePackage))
+    return;
     
     
     NSDictionary* sourceLookup = [sourceIDMap objectForKey:[NSNumber numberWithInt:sourceID]];
@@ -182,25 +187,31 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     
     if ([sourceLine rangeOfString:@"delete Module._cache"].location != NSNotFound)
     return;
-    
-    WebScriptObject *scope = [[frame scopeChain] objectAtIndex:0]; // local is always first
-    
-    
-    NSArray *localScopeVariableNames = [self webScriptAttributeKeysForScriptObject:scope];
     NSMutableDictionary *localScope = [[NSMutableDictionary alloc] init];
     
+    WebScriptObject *scope = [[frame scopeChain] objectAtIndex:0]; // local is always first
+    NSArray *localScopeVariableNames = [NAKWebViewDebug webScriptAttributeKeysForScriptObject:scope];
+    
     for (int i = 0; i < [localScopeVariableNames count]; ++i) {
-        NSString* key =[localScopeVariableNames objectAtIndex:i];
-        NSString* value=[self valueForScopeVariableNamed:key inCallFrame:frame];
-        
-        if ([value length] > 200) {
-            value = [[value substringToIndex:200] stringByAppendingString:@"..."];
+        @try{
+            
+            NSString* key =[localScopeVariableNames objectAtIndex:i];
+            NSString* value=[NAKWebViewDebug valueForScopeVariableNamed:key inCallFrame:frame];
+            
+            if ([value length] > 200) {
+                value = [[value substringToIndex:200] stringByAppendingString:@"..."];
+            }
+            
+            [localScope setObject:value forKey:key];
         }
-        
-        [localScope setObject:value forKey:key];
+        @catch (NSException * e) {
+            NSLog(@"Warning: %@", e);
+        }
+        @finally {
+         }
     }
     
-    currentException = @{ @"source" : @"",
+    currentException = @{ @"source" : source,
                           @"lineNumber" : [@(lineNumber) stringValue],
                           @"sourceLine" : sourceLine,
                           @"callStack" : callStack,
@@ -226,7 +237,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     
 }
     
-     - (NSArray *)webScriptAttributeKeysForScriptObject:(WebScriptObject *)object
++ (NSArray *)webScriptAttributeKeysForScriptObject:(WebScriptObject *)object
     {
         
         
@@ -246,7 +257,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     
     
     
-- (NSString *)valueForScopeVariableNamed:(NSString *)key inCallFrame:(WebScriptCallFrame *)frame
++ (NSString *)valueForScopeVariableNamed:(NSString *)key inCallFrame:(WebScriptCallFrame *)frame
     {
         
         if (![[frame scopeChain] count])
@@ -257,18 +268,18 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
             WebScriptObject *scope = [[frame scopeChain] objectAtIndex:i];
             id value = [scope valueForKey:key];
             
-         if ([value isKindOfClass:NSClassFromString(@"WebScriptObject")])
-              return [value callWebScriptMethod:@"toString" withArguments:nil];
-        if (value && ![value isKindOfClass:[NSString class]])
+            if ([value isKindOfClass:NSClassFromString(@"WebScriptObject")])
             return [value callWebScriptMethod:@"toString" withArguments:nil];
-        return [NSString stringWithFormat:@"%@", value];
-         if (value)
-           return value;
+            if (value && ![value isKindOfClass:[NSString class]])
+            return [value callWebScriptMethod:@"toString" withArguments:nil];
+            return [NSString stringWithFormat:@"%@", value];
+            if (value)
+            return value;
         }
         
         return nil;
     }
-
+    
     
     // just entered a stack frame (i.e. called a function, or started global scope)
     //- (void)webView:(WebView *)webView didEnterCallFrame:(WebScriptCallFrame *)frame sourceId:(int)sid line:(int)lineno forWebFrame:(WebFrame *)webFrame {}

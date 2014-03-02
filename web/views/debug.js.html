@@ -1,8 +1,9 @@
 @{
+console.log("STARTING DEBUG");
     layout = "layout.js.html";
     viewBag.Title = "Exception";
     var e = process.debugException();
-//var fileName = e.locals['__filename'];
+    var fileName = e.locals['__filename'];
 /*
 * "source"
 * "lineNumber"
