@@ -11,14 +11,12 @@ var app = new owinAppBuilder;
 
 app.use(route);
 
-route.getdebug('/', function(){
-        console.log("DEBUG: ");
+route.get('/', function(){
         filename = 'debug.js.html';
                pathbase = path.join(__dirname, "/views/");
                return  owinRazor.renderViewAsync(this, filename, pathbase);
                this.Response.writeHead(200, {"Content-Type" : "text/html"});
                this.Response.end("<h1>ERROR<h1>");
-               console.log("DEBUGEND: " );
                
                return Promise.from(null);
       

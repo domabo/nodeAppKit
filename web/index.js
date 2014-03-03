@@ -17,7 +17,7 @@ route.get('/', function(){
             console.log("GET: " +this.Request.Path);
             var owin = this;
             fileName = 'index.js.html';
-         vv
+         
           return  owinRazor.renderViewAsync(this, fileName);
           });
 

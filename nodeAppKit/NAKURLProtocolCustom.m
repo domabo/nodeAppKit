@@ -65,12 +65,9 @@
     __weak NAKURLProtocolCustom *protocol = self;
     
     [NAKOWIN invokeAppFunc:owin callBack:^ void (id error, id value){
-        NSLog(@"CALLBACK");
-        NSLog([self.request.URL absoluteString]);
-        
        if (error != [NSNull null])
         {
-          NSLog(@"Error occurred");
+          NSLog(@"Unhandled Server Error Occurred");
         }
         else
         {

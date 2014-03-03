@@ -57,7 +57,6 @@
                                     @"locals" : [[NSMutableArray alloc] init],
                                   @"exception" : @"",
                                   @"description" : @""};
-            NSLog(@"DEBUG");
             return currentException;
             
         };
@@ -210,7 +209,6 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
             [localScope setObject:value forKey:key];
         }
         @catch (NSException * e) {
-     //       NSLog(@"Warning: %@", e);
         }
         @finally {
          }
