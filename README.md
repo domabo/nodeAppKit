@@ -1,6 +1,6 @@
-![nodeAppKit](https://raw.github.com/owinJS/nodeAppKit/master/static/domaba/images/nodeAppKit.png)
+![nodeAppKit](https://raw.github.com/OwinJS/nodeAppKit/master/app-shared/owinjs-splash/images/nodeAppKit.png)
 
-## Overview
+## Overview: A Native Web Application Kit
 
 **nodeAppKit**, the lightweight Application UI for Desktop and Mobile Platforms, based on node.js but using  native javascript engines for small footprint and appstore compatability, and fully integrated with a modern HTML5 embedded browser to display the user interface.
 
