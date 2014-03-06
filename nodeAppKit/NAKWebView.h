@@ -1,13 +1,14 @@
 //
-//  NodeWebView.h
-//  nodmob
+//  NAKWebView.h
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/15/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import <Foundation/Foundation.h>
-#import "Webkit/Webkit.h"
 
 @interface NAKWebView :  NSObject
 + (void) createWindow: (NSString*) urlAddress title:(NSString*)title  width:(int)x height:(int) y;

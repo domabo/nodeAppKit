@@ -1,19 +1,17 @@
 //
-//  NAAppDelegate.m
-//  node-appkit
+//  NAKAppDelegate.h
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/15/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKAppDelegate.h"
 #import "NodeAppKit.h"
 #import "NAKWebView.h"
 #import "NAKOWIN.h"
-
-@interface WebView (WebPrivate)
-+ (void)_enableRemoteInspector;
-@end
 
 @implementation NAKAppDelegate
 {
@@ -32,8 +30,6 @@
     [subMenu addItemWithTitle:@"Debug" action:@selector(Debug:) keyEquivalent:@"d"];
                                                        
     [[NSApplication sharedApplication] setMainMenu:menu];
-    
-    
     
     @autoreleasepool {
         nodeAppKit = [[NodeAppKit alloc] init];

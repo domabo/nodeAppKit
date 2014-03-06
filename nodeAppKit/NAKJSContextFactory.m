@@ -1,15 +1,18 @@
 //
-//  NAKJavascriptContextFactory.m
-//  nodeAppKit
+//  NAKJSContextFactory.m
+//  The nodeAppKit Project
 //
 //  Created by Guy Barnard on 2/28/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKJSContextFactory.h"
 #import <Nodelike/Nodelike.h>
 #import "NAKWebView.h"
 #import "NAKWebViewDebug.h"
+#import "Webkit/Webkit.h"
 
 @interface WebView ()
     -(id)setScriptDebugDelegate:(id)delegate;

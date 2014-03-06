@@ -1,13 +1,16 @@
 //
 //  NAKWebViewDebug.m
-//  nodeAppKit
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/27/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKWebViewDebug.h"
 #import "NAKWebView.h"
+#import "Webkit/Webkit.h"
 
 @class WebFrame;
 

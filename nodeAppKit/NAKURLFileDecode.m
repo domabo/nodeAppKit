@@ -1,9 +1,11 @@
 //
-//  URLFileDecode.m
-//  nodmob
+//  NAKURLFileDecode.m
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/15/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKURLFileDecode.h"
@@ -35,20 +37,20 @@
         
         if ([_fileName length] > 0) {
             _resourcePath = [[NSBundle mainBundle]
-                             pathForResource:_fileBase ofType:_fileExtension inDirectory: [@"web" stringByAppendingPathComponent:_urlPath]];
+                             pathForResource:_fileBase ofType:_fileExtension inDirectory: [@"app" stringByAppendingPathComponent:_urlPath]];
             
             if ((_resourcePath == nil) && ([_fileExtension length] >0))
             _resourcePath = [[NSBundle mainBundle]
-                             pathForResource:_fileBase ofType:_fileExtension inDirectory: [@"static" stringByAppendingPathComponent:_urlPath]];
+                             pathForResource:_fileBase ofType:_fileExtension inDirectory: [@"app-shared" stringByAppendingPathComponent:_urlPath]];
             
             
             if ((_resourcePath == nil) && ([_fileExtension length] ==0))
             _resourcePath = [[NSBundle mainBundle]
-                             pathForResource:_fileBase ofType:@"html" inDirectory: [@"web" stringByAppendingPathComponent:_urlPath]];
+                             pathForResource:_fileBase ofType:@"html" inDirectory: [@"app" stringByAppendingPathComponent:_urlPath]];
             
             if ((_resourcePath == nil) && ([_fileExtension length] ==0))
             _resourcePath = [[NSBundle mainBundle]
-                             pathForResource:@"index" ofType:@"html" inDirectory: [@"web" stringByAppendingPathComponent:[[request URL] path]]];
+                             pathForResource:@"index" ofType:@"html" inDirectory: [@"app" stringByAppendingPathComponent:[[request URL] path]]];
             
             _mimeType = nil;
             _textEncoding = nil;

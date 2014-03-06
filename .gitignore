@@ -25,4 +25,4 @@ Pods
 # Node
 **/node_modules/*
 **/components/*
-/web-shared/OwinJS/*
+/app-shared/OwinJS/*

@@ -1,9 +1,11 @@
 //
-//  OwinServer.m
-//  nodmob
+//  NAKOWIN.m
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/9/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKOWIN.h"
@@ -14,16 +16,11 @@ static JSContext *_context = nil;
 + (void)attachToContext:(JSContext *)context
 {
     _context = context;
-    
 }
 
 + (JSValue*) createOwinContext
 {
     return [_context evaluateScript:@"process.owinJS.createEmptyContext();"];
-    
- //   return [_context[@"process"][@"owinJS"][@"createEmptyContext"] callWithArguments:@[]];
-    
-  // return [JSValue valueWithNewObjectInContext:_context];
 }
 
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack

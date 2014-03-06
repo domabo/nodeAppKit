@@ -1,9 +1,19 @@
-#import "NodeAppKit.h"
-#import "NAKWebView.h"
+//
+//  NodeAppKit.m
+//  The nodeAppKit Project
+//
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
+//
+
 #import "NAKWebViewDebug.h"
 #import "NAKOWIN.h"
 #import "NAKJSContextFactory.h"
-
+#import <Nodelike/Nodelike.h>
+#import "NodeAppKit.h"
+#import "NAKWebView.h"
 
 @implementation NodeAppKit
 {
@@ -21,7 +31,7 @@
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/web"];
         NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/node_modules"];
         NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/web-shared/OwinJS"];
-         NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/web-shared/node_modules"];
+        NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/web-shared/node_modules"];
          
         NSString *resPaths = [[[[[[[[webPath stringByAppendingString:@":"]
                                   stringByAppendingString:nodeModulePathWeb]
@@ -32,11 +42,11 @@
                                stringByAppendingString:@":"]
                               stringByAppendingString:resourcePath];
         
-        NSString *index = [mainBundle pathForResource:@"index" ofType:@"js" inDirectory:@"web"];
+        NSString *index = [mainBundle pathForResource:@"package" ofType:@"json" inDirectory:@"app"];
         
         if (!index)
         {
-            NSLog(@"Missing index.js in main bundle /Resources/web");
+            NSLog(@"Missing package.json in main bundle /Resources/app");
             return;
         }
         
@@ -51,9 +61,9 @@
         
         JSGlobalContextRetain([context JSGlobalContextRef]);
         
-        NSString *nodeappkit = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
+        NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
         
-        [context evaluateScript:nodeappkit];
+        [context evaluateScript:nodeappkitJS];
         
         JSGlobalContextRetain([context JSGlobalContextRef]);
         

@@ -1,15 +1,18 @@
 //
-//  NodeWebView.m
-//  nodmob
+//  NAKWebView.m
+//  The nodeAppKit Project
 //
-//  Created by Guy Barnard on 2/15/14.
-//  Copyright (c) 2014 domabo. All rights reserved.
+//  Created by Guy Barnard on 2/28/14.
+//  Copyright (c) 2014 Guy Barnard. See License File for rights.
+//
+//  An OWIN/JS Reference Implementation
 //
 
 #import "NAKWebView.h"
 #import "NAKURLProtocolCustom.h"
 #import "NAKURLProtocolLocalFile.h"
 #import "NAKOWIN.h"
+#import "Webkit/Webkit.h"
 
 static NSWindow *splashWindow = nil;
 static NSMutableArray *mainWindows = nil;
