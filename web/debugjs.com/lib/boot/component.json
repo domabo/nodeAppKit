@@ -1,0 +1,23 @@
+{
+  "name": "boot",
+  "description": "boot",
+  "dependencies": {
+    "component/emitter": "*",
+    "amasad/dom": "*"
+  },
+  "development": {},
+  "main": "boot.js",
+  "scripts": [
+    "boot.js"
+  ],
+  "styles": [
+    "boot.css"
+  ],
+  "local": [
+    "editor",
+    "devtools",
+    "models",
+    "header"
+  ],
+  "remotes": []
+}

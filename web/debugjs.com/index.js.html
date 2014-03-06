@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="icon" type="image/png" href="build/favicon.png" />
+    <link type="text/css" rel="stylesheet" charset="utf-8" href="/build/build.css" />
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+    <title>debug.js</title>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-46884155-1', 'debugjs.com');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+  <body>
+    <header class="navbar navbar-default " role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+          <a class="navbar-brand" href="#">debug.js</a>
+        </div>
+        <nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+          <ul class="nav navbar-nav files">
+            <li class="active" data-filename="index.js"><a href="javascript:void(0)">index.js</a></li>
+            <li data-filename="index.html"><a href="javascript:void(0)">index.html</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="project-link" href="http://github.com/amasad/debugjs.com" target="_blank">
+                <button type="button" class="btn btn-info navbar-btn">
+                  <i class="fa fa-github"></i>
+                </button>
+              </a>
+            </li>
+            <li>
+              <a class="project-link" href="http://twitter.com/amasad" target="_blank">
+                <button type="button" class="btn btn-info navbar-btn">
+                  <i class="fa fa-twitter"></i>
+                </button>
+              </a>
+            </li>
+            <li>
+              <button type="button" class="btn btn-info navbar-btn save">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="main container">
+      <div class="row code-result">
+        <div class="code col-sm-6 component-editor">
+          <div class="editor"></div>
+          <a role="button" class="btn btn-primary run">Run</a>
+        </div>
+        <div class="result col-sm-6"></div>
+      </div>
+      <div class="row debugger-console component-devtools">
+        <div class="console col-sm-6"></div>
+        <div class="debugger col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="btn-group toolbar">
+                <a role="button" class="btn btn-sm resume" disabled title="Resume">
+                  <span class="glyphicon glyphicon-play-circle"></span>
+                </a>
+                <a role="button" class="btn btn-sm step-over" disabled title="Step Over">
+                  <span class="glyphicon glyphicon-share-alt"></span>
+                </a>
+                <a role="button" class="btn btn-sm step-in" disabled title="Step In">
+                  <span class="glyphicon glyphicon-circle-arrow-down"></span>
+                </a>
+                <a role="button" class="btn btn-sm step-out" disabled title="Step Out">
+                  <span class="glyphicon glyphicon-circle-arrow-up"></span>
+                </a>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading stack-heading"><h6>Call Stack</h6></div>
+              <table class="call-stack table table-striped"><tr></tr></table>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading scope-heading"><h6>Scope</h6></div>
+              <table class="var-scope table table-striped"><tr></tr></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="build/build.js" charset="utf-8"></script>
+    <script type="text/javascript">require('boot');</script>
+  </body>
+</html>

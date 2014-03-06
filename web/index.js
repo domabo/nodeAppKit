@@ -1,27 +1,26 @@
 var Browser = require('browser');
-var Promise = require('promise');
-var OwinJS = require('owinjs');
+var owinjs = require('owinjs');
 var router = require('owinjs-router');
+var static = require('owinjs-static');
+var razor = require('owinjs-razor');
 var route = router();
-var owinAppBuilder = OwinJS.AppBuilder;
-var owinRazor = OwinJS.Razor;
+var owinRazor = owinjs.Razor;
 
-//@ sourceURL=filename.js
-//# sourceURL=filename.js
-
-var app = new owinAppBuilder;
+var app = new owinjs.app;
 
 app.use(route);
 
 route.get('/', function(){
-            console.log("GET: " +this.Request.Path);
+            console.log("GET: " +this.request.path);
             var owin = this;
             fileName = 'index.js.html';
          
-          return  owinRazor.renderViewAsync(this, fileName);
+          return  razor.renderViewAsync(this, fileName);
           });
 
-Browser.createOwinServer(app.build()).listen();
+//app.use(static('./bootstrap'));
+
+Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 800, 600);
 
 /*browser.createOwinServer(function (owin, callback) {
                          path = 'index.js.html';

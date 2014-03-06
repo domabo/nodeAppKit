@@ -1,18 +1,19 @@
 {
     "name": "node-appkit",
-    "main": "",
+    "main": "index.js",
     "node-main": "index.js",
     "node-baseurl": "node://localhost/",
     "description": "Basic node demo app",
-    "author": "domabo",
+    "author": "OwinJS",
     "version": "0.0.1",
     "repository": "https://github.com/OwinJS/nodeAppKit",
     "dependencies": {
-        "razor": "git://github.com/OwinJS/RazorJS.git",
-        "OwinJS": "git://github.com/OwinJS/OwinJS.git",
-        "owinjs-router": "git://github.com/OwinJS/owinjs-router.git",
-        "promise": "*"
-    },
+          "owinjs-razor": "git://github.com/OwinJS/owinjs-razor.git",
+          "owinjs-static": "git://github.com/OwinJS/owinjs-static.git",
+          "owinjs-router": "git://github.com/OwinJS/owinjs-router.git",
+          "owinjs": "git://github.com/OwinJS/owinjs.git",
+          "promise": "*"
+     }  ,
     "engines": {
         "node": ">= 0.10.0"
     },

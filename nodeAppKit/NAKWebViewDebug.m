@@ -5,16 +5,11 @@
 //  Created by Guy Barnard on 2/27/14.
 //  Copyright (c) 2014 domabo. All rights reserved.
 //
-#ifdef DEBUG
 
 #import "NAKWebViewDebug.h"
 #import "NAKWebView.h"
 
 @class WebFrame;
-
-/*@interface WebView
- - (void)setScriptDebugDelegate:(id)delegate;
- @end*/
 
 @interface WebScriptCallFrame
 - (id)exception;
@@ -24,10 +19,6 @@
 - (id)evaluateWebScript:(NSString *)script;
     @end
 
-/*@interface WebScriptObject
- - (id)valueForKey:(NSString*)key;
- @end*/
-
 @implementation NAKWebViewDebug
     
     static NSString* const kSourceIDMapFilenameKey = @"filename";
@@ -35,7 +26,15 @@
     static NSMutableDictionary* sourceIDMap;
     static NSDictionary *currentException = nil;
     static bool debuggerStopped = NO;
-    
+
+    static bool throwIfHandled = NO;
+
++ (bool) throwIfHandled
+{ @synchronized(self) { return throwIfHandled; } }
++ (void) setThrowIfHandled:(bool)val
+{ @synchronized(self) { throwIfHandled = val; } }
+
+
 - (id)init
     {
         if ((self = [super init])) {
@@ -61,6 +60,9 @@
             
         };
         
+        context.exceptionHandler = ^(JSContext *ctx, JSValue *e) {
+            NSLog(@"JAVASCRIPT EXCEPTION: %@", e);
+        };
     }
     
 + (NSString*)filenameForURL:(NSURL*)url {
@@ -119,7 +121,7 @@
         sourceLine = [[sourceLine substringToIndex:200] stringByAppendingString:@"..."];
     }
     
-    NSLog(@"Parse error - %@fileLineNumber: %d, sourceline: %@\n%@", filename, fileLineNumber, sourceLine, description);
+    NSLog(@"Parse error - %@fileLineNumber: %@, sourceline: %@\n%@", filename, fileLineNumber, sourceLine, description);
     
     
     currentException = @{ @"source" :source,
@@ -130,17 +132,26 @@
                           @"exception" : @"Failed to Parse Source",
                           @"description" : description};
     debuggerStopped = YES;
-    [NAKWebView createDebugWindow];
-    
-    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [NAKWebView showDebugWindow:currentException];
+    });
 }
     
-- (void)webView:(WebView *)webView exceptionWasRaised:(WebScriptCallFrame *)frame sourceId:(int)
-
-sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
+- (void)webView:(WebView *)webView   exceptionWasRaised:(WebScriptCallFrame *)frame
+         hasHandler:(BOOL)hasHandler
+           sourceId:(int)sourceID
+               line:(int)lineNumber
+        forWebFrame:(WebFrame *)webFrame {
     
-    WebScriptObject* exception = [frame exception];
+     WebScriptObject* exception = [frame exception];
     
+    if (hasHandler  && !throwIfHandled)
+    {
+      return;
+    }
+   
     NSMutableArray *callStack = [[NSMutableArray alloc] init];
     
     bool tryFilePackage = NO;
@@ -176,6 +187,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     NSMutableString *message = [NSMutableString stringWithCapacity:100];
     
     [message appendFormat:@"Exception\n\nName: %@", [exception valueForKey:@"name"]];
+  //  NSMutableString *stack = [exception valueForKey:@"stack"];
     
     if (filename) {
         [message appendFormat:@", filename: %@", filename];
@@ -191,24 +203,26 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     
     if ([sourceLine rangeOfString:@"delete Module._cache"].location != NSNotFound)
     return;
-    NSMutableDictionary *localScope = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *locals = [[NSMutableDictionary alloc] init];
     
     WebScriptObject *scope = [[frame scopeChain] objectAtIndex:0]; // local is always first
     NSArray *localScopeVariableNames = [NAKWebViewDebug webScriptAttributeKeysForScriptObject:scope];
     
     for (int i = 0; i < [localScopeVariableNames count]; ++i) {
+        
+            NSString* key =[localScopeVariableNames objectAtIndex:i];
         @try{
             
-            NSString* key =[localScopeVariableNames objectAtIndex:i];
-            NSString* value=[NAKWebViewDebug valueForScopeVariableNamed:key inCallFrame:frame];
+             NSString* value=[NAKWebViewDebug valueForScopeVariableNamed:key inCallFrame:frame];
             
             if ([value length] > 200) {
                 value = [[value substringToIndex:200] stringByAppendingString:@"..."];
             }
             
-            [localScope setObject:value forKey:key];
+            [locals setObject:value forKey:key];
         }
         @catch (NSException * e) {
+            [locals setObject:@"[not available]" forKey:key];
         }
         @finally {
          }
@@ -219,6 +233,14 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     
     NSLog(@"%@", message);
     
+    [[webFrame windowObject] setValue:[frame exception] forKey:@"__GC_frame_exception"];
+    
+ /*   id objectRef = [[webFrame windowObject] evaluateWebScript:@"__GC_frame_exception.constructor.name"];
+    [[webFrame windowObject] setValue:nil forKey:@"__GC_frame_exception"];
+    
+    NSLog(objectRef);*/
+    
+    
    if (  debuggerStopped )
    return;
 
@@ -226,7 +248,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
                           @"lineNumber" : [@(lineNumber) stringValue],
                           @"sourceLine" : sourceLine,
                           @"callStack" : callStack,
-                          @"locals" : localScope,
+                          @"locals" : locals,
                           @"exception" : [exception valueForKey:@"name"],
                           @"description" : [exception valueForKey:@"message"]};
     debuggerStopped = YES;
@@ -234,7 +256,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
         double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [NAKWebView createDebugWindow];
+        [NAKWebView showDebugWindow:currentException];
     });
     
 }
@@ -265,7 +287,7 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
         if (![[frame scopeChain] count])
         return nil;
         
-        unsigned scopeCount = [[frame scopeChain] count] ;
+        unsigned scopeCount = (int)[[frame scopeChain] count];
         for (unsigned i = 0; i < scopeCount; i++) {
             WebScriptObject *scope = [[frame scopeChain] objectAtIndex:i];
             id value = [scope valueForKey:key];
@@ -282,10 +304,26 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
         return nil;
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
+    -(id)functionNameForFrame:(WebScriptCallFrame*)frame {
+        SEL functionNameSelector = @selector(functionName);
+        return [(id)frame performSelector:functionNameSelector];
+    }
     
-    // just entered a stack frame (i.e. called a function, or started global scope)
-    //- (void)webView:(WebView *)webView didEnterCallFrame:(WebScriptCallFrame *)frame sourceId:(int)sid line:(int)lineno forWebFrame:(WebFrame *)webFrame {}
+-(id)callerForFrame:(WebScriptCallFrame*)frame {
+    SEL callerSelector = @selector(caller);
+    return [(id)frame performSelector:callerSelector];
+}
     
+-(id)exceptionForFrame:(WebScriptCallFrame*)frame {
+    SEL exceptionSelector = @selector(exception);
+    return [(id)frame performSelector:exceptionSelector];
+}
+#pragma clang diagnostic pop
+
+  
     // about to execute some code
     //- (void)webView:(WebView *)webView willExecuteStatement:(WebScriptCallFrame *)frame sourceId:(int)sid line:(int)lineno forWebFrame:(WebFrame *)webFrame;
     
@@ -293,4 +331,6 @@ sourceID line:(int)lineNumber forWebFrame:(WebFrame *)webFrame {
     //- (void)webView:(WebView *)webView willLeaveCallFrame:(WebScriptCallFrame *)frame sourceId:(int)sid line:(int)lineno forWebFrame:(WebFrame *)webFrame;
     
     @end
+#ifdef DEBUG
+
 #endif

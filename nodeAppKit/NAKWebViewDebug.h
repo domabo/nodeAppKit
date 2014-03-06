@@ -12,5 +12,6 @@
 @interface NAKWebViewDebug : NSObject{
 }
 - (void)attachToContext:(JSContext*)context;
-
++ (bool) throwIfHandled;
++ (void) setThrowIfHandled:(bool)val;
 @end

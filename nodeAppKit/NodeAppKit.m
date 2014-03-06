@@ -1,5 +1,6 @@
 #import "NodeAppKit.h"
 #import "NAKWebView.h"
+#import "NAKWebViewDebug.h"
 #import "NAKOWIN.h"
 #import "NAKJSContextFactory.h"
 
@@ -18,13 +19,16 @@
    NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/web"];
-        NSString *nodeModulePathWeb = [webPath stringByAppendingPathComponent:@"/node_modules"];
         NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/node_modules"];
-        
-        NSString *resPaths = [[[[[[webPath stringByAppendingString:@":"]
+        NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/web-shared/OwinJS"];
+         NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/web-shared/node_modules"];
+         
+        NSString *resPaths = [[[[[[[[webPath stringByAppendingString:@":"]
                                   stringByAppendingString:nodeModulePathWeb]
                                  stringByAppendingString:@":"]
-                                stringByAppendingString: nodeModulePath ]
+                                stringByAppendingString: nodeModulePathWeb2 ]
+                               stringByAppendingString:@":"]
+                              stringByAppendingString: nodeModulePath ]
                                stringByAppendingString:@":"]
                               stringByAppendingString:resourcePath];
         
@@ -54,8 +58,10 @@
         JSGlobalContextRetain([context JSGlobalContextRef]);
         
         [NAKOWIN attachToContext:context];
-        
+        [NAKWebViewDebug setThrowIfHandled:YES];
         [context evaluateScript:@"module._load(package['node-main'], null, true);"];
+         [NAKWebViewDebug setThrowIfHandled:YES];
+         
         [NLContext runEventLoopAsync];
     }];
 }

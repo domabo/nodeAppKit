@@ -1,0 +1,33 @@
+body {
+  font-family: 'Ubuntu Mono', sans-serif;
+}
+
+.toolbar button {
+  padding: 4px 10px;
+}
+
+.code-result .result,
+.code-result .code {
+  height: 100%;
+}
+
+.code-result .result iframe {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+}
+
+body, html{
+  height: 100%;
+}
+
+.main.container {
+  height: calc(100% - 72px);
+}
+.code-result {
+  height: 60%;
+}
+
+.debugger-console {
+  height: 40%;
+}

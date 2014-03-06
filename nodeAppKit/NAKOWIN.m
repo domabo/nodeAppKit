@@ -15,14 +15,15 @@ static JSContext *_context = nil;
 {
     _context = context;
     
-     [_context evaluateScript:
-      @"process.owinJS = require('owinserver.js');\n"
-        ];
 }
 
 + (JSValue*) createOwinContext
 {
-    return [_context evaluateScript:@"process.owinJS.createContext()"];
+    return [_context evaluateScript:@"process.owinJS.createEmptyContext();"];
+    
+ //   return [_context[@"process"][@"owinJS"][@"createEmptyContext"] callWithArguments:@[]];
+    
+  // return [JSValue valueWithNewObjectInContext:_context];
 }
 
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack

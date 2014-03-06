@@ -1,0 +1,13 @@
+{
+  "name": "models",
+  "description": "",
+  "dependencies": {
+    "component/model": "*",
+    "segmentio/model-defaults": "*"
+  },
+  "development": {},
+  "main": "models.js",
+  "scripts": [
+    "models.js"
+  ]
+}

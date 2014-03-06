@@ -1,0 +1,30 @@
+.component-editor {
+  position: relative;
+}
+
+.component-editor,
+.component-editor .editor,
+.component-editor .CodeMirror  {
+  height: 100%;
+}
+
+.component-editor .run {
+  position: absolute;
+  top: 2px;
+  right: 17px;
+  z-index: 2;
+  border-radius: 3px;
+  background-color: #25D1A3;
+  border-color: transparent;
+}
+
+.component-editor .run:hover {
+  background-color: #21BB92;
+}
+.component-editor .breakpoints {width: .8em;}
+.component-editor .breakpoint { color: #822; }
+.component-editor .CodeMirror {border: 1px solid #CCC;}
+.component-editor .marker {color: #822}
+.component-editor .selected {
+  background: rgba(117, 204, 231, 0.54);;
+}

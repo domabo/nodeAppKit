@@ -12,7 +12,7 @@
 #import "NAKWebViewDebug.h"
 
 @interface WebView ()
--(id)setScriptDebugDelegate:(id)delegate;
+    -(id)setScriptDebugDelegate:(id)delegate;
 @end
 
 @implementation NAKJSContextFactory
@@ -80,8 +80,8 @@
 {
     NAKWebViewDebug *debug = [[NAKWebViewDebug alloc] init];
     [webView setScriptDebugDelegate:debug];
-  
-    context =ctx;
+    
+     context =ctx;
     [NLContext attachToContext:ctx];
     [debug attachToContext:ctx];
     

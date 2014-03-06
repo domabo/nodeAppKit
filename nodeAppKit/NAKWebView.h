@@ -14,4 +14,5 @@
 + (void) createSplashWindow: (NSString*) urlAddress width:(int)x height:(int)y;
 + (void) closeSplashWindow;
 + (void) createDebugWindow;
++ (void) showDebugWindow: (NSDictionary*)exception;
 @end
