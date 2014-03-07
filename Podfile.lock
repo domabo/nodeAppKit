@@ -2,11 +2,11 @@ PODS:
   - Nodelike (0.1.0)
 
 DEPENDENCIES:
-  - Nodelike (from `https://github.com/node-app/Nodelike.git`, commit `d61d9c1cc7`)
+  - Nodelike (from `https://github.com/node-app/Nodelike.git`, commit `9eab9ce1053eb80599cb323222601ce8695486dc`)
 
 EXTERNAL SOURCES:
   Nodelike:
-    :commit: d61d9c1cc7
+    :commit: 9eab9ce1053eb80599cb323222601ce8695486dc
     :git: https://github.com/node-app/Nodelike.git
     :submodules: true
 

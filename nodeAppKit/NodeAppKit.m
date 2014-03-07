@@ -19,26 +19,26 @@
 {
      NAKJSContextFactory *JSContextFactory;
 }
-
+   
 - (void) run {
-   JSContextFactory = [[NAKJSContextFactory alloc] init];
     
-     [JSContextFactory create: ^ void (JSContext *context){
-         [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
-         
-   NSBundle *mainBundle = [NSBundle mainBundle];
+    JSContextFactory = [[NAKJSContextFactory alloc] init];
+    [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
+    
+    [JSContextFactory createCore: ^ void (JSContext *context){
+        NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
-        NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/web"];
+        NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/app"];
         NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/node_modules"];
-        NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/web-shared/OwinJS"];
-        NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/web-shared/node_modules"];
-         
+        NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/app-shared/OwinJS"];
+        NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/app-shared/node_modules"];
+        
         NSString *resPaths = [[[[[[[[webPath stringByAppendingString:@":"]
-                                  stringByAppendingString:nodeModulePathWeb]
+                                    stringByAppendingString:nodeModulePathWeb]
+                                   stringByAppendingString:@":"]
+                                  stringByAppendingString: nodeModulePathWeb2 ]
                                  stringByAppendingString:@":"]
-                                stringByAppendingString: nodeModulePathWeb2 ]
-                               stringByAppendingString:@":"]
-                              stringByAppendingString: nodeModulePath ]
+                                stringByAppendingString: nodeModulePath ]
                                stringByAppendingString:@":"]
                               stringByAppendingString:resourcePath];
         
@@ -49,7 +49,7 @@
             NSLog(@"Missing package.json in main bundle /Resources/app");
             return;
         }
-        
+ 
         context[@"process"][@"env"][@"NODE_PATH"] = resPaths;
         context[@"process"][@"workingDirectory"] = webPath;
         context[@"process"][@"createWindow"] = ^(NSString* url, NSString* title, int width, int height){
@@ -59,20 +59,30 @@
             });
         };
         
-        JSGlobalContextRetain([context JSGlobalContextRef]);
-        
-        NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
-        
-        [context evaluateScript:nodeappkitJS];
-        
-        JSGlobalContextRetain([context JSGlobalContextRef]);
+         context[@"process"][@"nextTick"] = ^(JSValue * cb) {
+          dispatch_async(dispatch_get_main_queue(), ^(void) {
+         [cb callWithArguments:@[]];
+         });
+         };
         
         [NAKOWIN attachToContext:context];
-        [NAKWebViewDebug setThrowIfHandled:YES];
-        [context evaluateScript:@"module._load(package['node-main'], null, true);"];
-         [NAKWebViewDebug setThrowIfHandled:YES];
-         
-        [NLContext runEventLoopAsync];
+        JSGlobalContextRetain([context JSGlobalContextRef]);
+        
+        // RUN SCRIPTS FROM MAIN QUEUE
+        
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [NAKWebViewDebug setThrowIfHandled:YES];
+             
+             NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
+             
+             [context evaluateScript:nodeappkitJS];
+            
+             [context evaluateScript:@"module._load(package['node-main'], null, true);"];
+             
+             [NAKWebViewDebug setThrowIfHandled:YES];
+             
+             [NLContext runEventLoopSync];
+        });
     }];
 }
 @end

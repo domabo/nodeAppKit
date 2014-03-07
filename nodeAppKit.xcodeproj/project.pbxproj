@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8743BE86465547CD8E6EFCB8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EA4596A95745A8969921C8 /* libPods.a */; };
 		E40923BE18C7FB0200FB4610 /* owinserver.js in Resources */ = {isa = PBXBuildFile; fileRef = E40923BC18C7FAF300FB4610 /* owinserver.js */; };
+		E40923C118C9E8D500FB4610 /* NSObject+NodeAppKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E40923C018C9E8D500FB4610 /* NSObject+NodeAppKit.m */; };
 		E434392118C1815900AC9302 /* NAKJSContextFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E434392018C1815900AC9302 /* NAKJSContextFactory.m */; };
 		E463F6FD18C3F1780079895E /* cancellation.js in Resources */ = {isa = PBXBuildFile; fileRef = E463F6FB18C3F1670079895E /* cancellation.js */; };
 		E465962018C562D200A8DFA5 /* app-shared in Resources */ = {isa = PBXBuildFile; fileRef = E465961F18C562D200A8DFA5 /* app-shared */; };
@@ -33,6 +34,8 @@
 		52EA4596A95745A8969921C8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CCC7CFCCC7C411FB08DA0D3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		E40923BC18C7FAF300FB4610 /* owinserver.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = owinserver.js; path = lib/owinserver.js; sourceTree = "<group>"; };
+		E40923BF18C9E8D500FB4610 /* NSObject+NodeAppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+NodeAppKit.h"; sourceTree = "<group>"; };
+		E40923C018C9E8D500FB4610 /* NSObject+NodeAppKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+NodeAppKit.m"; sourceTree = "<group>"; };
 		E434391F18C1815900AC9302 /* NAKJSContextFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAKJSContextFactory.h; sourceTree = "<group>"; };
 		E434392018C1815900AC9302 /* NAKJSContextFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKJSContextFactory.m; sourceTree = "<group>"; };
 		E463F6FB18C3F1670079895E /* cancellation.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = cancellation.js; path = lib/cancellation.js; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				E47E80D318B04D23001E8321 /* NAKAppDelegate.h */,
 				E47E80D418B04D23001E8321 /* NAKAppDelegate.m */,
 				E47E80C818B04D23001E8321 /* Supporting Files */,
+				E40923BF18C9E8D500FB4610 /* NSObject+NodeAppKit.h */,
+				E40923C018C9E8D500FB4610 /* NSObject+NodeAppKit.m */,
 			);
 			path = nodeAppKit;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 				E47E80D518B04D23001E8321 /* NAKAppDelegate.m in Sources */,
 				E47E810818B04FEE001E8321 /* NAKURLProtocolCustom.m in Sources */,
 				E47E810918B04FEE001E8321 /* NAKURLProtocolLocalFile.m in Sources */,
+				E40923C118C9E8D500FB4610 /* NSObject+NodeAppKit.m in Sources */,
 				E47E71EC18C021C500D13E0C /* NAKWebViewDebug.m in Sources */,
 				E47E810318B04FEE001E8321 /* NodeAppKit.m in Sources */,
 			);

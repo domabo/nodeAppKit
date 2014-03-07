@@ -8,9 +8,9 @@ var owinRazor = owinjs.Razor;
 
 var app = new owinjs.app;
 
-app.use(route);
+//app.use(route);
 
-route.get('/', function(){
+route.get('/', function(){ 
             console.log("GET: " +this.request.path);
             var owin = this;
             fileName = 'index.js.html';
@@ -18,7 +18,7 @@ route.get('/', function(){
           return  razor.renderViewAsync(this, fileName);
           });
 
-//app.use(static('./bootstrap'));
+app.use(static('./bootstrap'));
 
 Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 800, 600);
 
@@ -28,4 +28,4 @@ Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 80
                   
                      }).listen(); */
 
-//setTimeout(function() {console.log("hello world")},3000);
+

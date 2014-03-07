@@ -9,7 +9,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "objc/runtime.h"
 
 @interface NodeAppKit : NSObject
 - (void) run;
 @end
+

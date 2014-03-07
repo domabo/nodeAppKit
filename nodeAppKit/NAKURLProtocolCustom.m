@@ -36,9 +36,10 @@
     
 - (void)startLoading
     {
+        
+        
         NSLog(@"Loading URL %@", self.request.URL);
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             __block JSValue *context =[NAKOWIN createOwinContext];
             
             NSString *path = [self.request.URL relativePath];
@@ -67,9 +68,10 @@
             }
             
             __weak NAKURLProtocolCustom *protocol = self;
-            
+            NSLog(@"Invoke");
             
             [NAKOWIN invokeAppFunc:context callBack:^ void (id error, id value){
+                NSLog(@"callback");
                 
                 if (error != [NSNull null])
                 {
