@@ -26,6 +26,7 @@
     [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
     
     [JSContextFactory createCore: ^ void (JSContext *context){
+      
         NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/app"];
@@ -59,30 +60,19 @@
             });
         };
         
-         context[@"process"][@"nextTick"] = ^(JSValue * cb) {
-          dispatch_async(dispatch_get_main_queue(), ^(void) {
-         [cb callWithArguments:@[]];
-         });
-         };
-        
         [NAKOWIN attachToContext:context];
         JSGlobalContextRetain([context JSGlobalContextRef]);
         
-        // RUN SCRIPTS FROM MAIN QUEUE
+        // RUN SCRIPTS
+        [NAKWebViewDebug setThrowIfHandled:YES];
         
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [NAKWebViewDebug setThrowIfHandled:YES];
-             
-             NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
-             
-             [context evaluateScript:nodeappkitJS];
+        NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
+        
+        [context evaluateScript:nodeappkitJS];
+        [context evaluateScript:@"module._load(package['node-main'], null, true);"];
+        [NLContext runEventLoopAsync];
             
-             [context evaluateScript:@"module._load(package['node-main'], null, true);"];
-             
-             [NAKWebViewDebug setThrowIfHandled:YES];
-             
-             [NLContext runEventLoopSync];
-        });
+        [NAKWebViewDebug setThrowIfHandled:YES];
     }];
 }
 @end

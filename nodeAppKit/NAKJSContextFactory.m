@@ -85,7 +85,7 @@
     [webView setScriptDebugDelegate:debug];
     
      context =ctx;
-    [NLContext attachToContext:ctx];
+     [NLContext attachToContext:ctx];
     [debug attachToContext:ctx];
     
     _completionHandler(context);

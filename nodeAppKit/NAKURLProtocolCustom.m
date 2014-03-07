@@ -68,10 +68,8 @@
             }
             
             __weak NAKURLProtocolCustom *protocol = self;
-            NSLog(@"Invoke");
             
             [NAKOWIN invokeAppFunc:context callBack:^ void (id error, id value){
-                NSLog(@"callback");
                 
                 if (error != [NSNull null])
                 {
