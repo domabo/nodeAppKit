@@ -1,3 +1,4 @@
+#ifdef DEBUG
 //
 //  NAKWebViewDebug.m
 //  The nodeAppKit Project
@@ -334,6 +335,5 @@
     //- (void)webView:(WebView *)webView willLeaveCallFrame:(WebScriptCallFrame *)frame sourceId:(int)sid line:(int)lineno forWebFrame:(WebFrame *)webFrame;
     
     @end
-#ifdef DEBUG
 
 #endif

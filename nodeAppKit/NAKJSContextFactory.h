@@ -16,6 +16,4 @@
 
 }
 - (void) create: (void(^)(id))jsCallback;
-- (void) createCore: (void(^)(id))jsCallback;
-
 @end

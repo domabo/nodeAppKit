@@ -20,6 +20,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"AMainMenu"], *subMenu;
     
     subMenu = [[NSMenu alloc] initWithTitle:@"domaba"];

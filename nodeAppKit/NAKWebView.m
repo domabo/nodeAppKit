@@ -142,7 +142,7 @@ static WebView *debugWebView = nil;
         }
         
     }
-    
+
 + (void) createDebugWindow
     {
         if (debugWindow != nil) return;

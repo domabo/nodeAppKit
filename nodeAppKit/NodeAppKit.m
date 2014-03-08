@@ -25,7 +25,7 @@
     JSContextFactory = [[NAKJSContextFactory alloc] init];
     [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
     
-    [JSContextFactory createCore: ^ void (JSContext *context){
+    [JSContextFactory create: ^ void (JSContext *context){
       
         NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
@@ -50,7 +50,7 @@
             NSLog(@"Missing package.json in main bundle /Resources/app");
             return;
         }
- 
+        
         context[@"process"][@"env"][@"NODE_PATH"] = resPaths;
         context[@"process"][@"workingDirectory"] = webPath;
         context[@"process"][@"createWindow"] = ^(NSString* url, NSString* title, int width, int height){
@@ -58,6 +58,16 @@
                 [NAKWebView createWindow: url title:title width:width height:height];
                 [NAKWebView closeSplashWindow];
             });
+        };
+        
+        context[@"process"][@"doEvents"] = ^(){
+            [NLContext runEventLoopSync];
+            [NLContext runProcessAsyncQueue: context];
+        };
+        
+        
+        context.exceptionHandler = ^(JSContext *ctx, JSValue *e) {
+            NSLog(@"Context exception thrown: %@; stack: %@", e, [e valueForProperty:@"stack"]);
         };
         
         [NAKOWIN attachToContext:context];
@@ -72,7 +82,7 @@
         [context evaluateScript:@"module._load(package['node-main'], null, true);"];
         [NLContext runEventLoopAsync];
             
-        [NAKWebViewDebug setThrowIfHandled:YES];
+        [NAKWebViewDebug setThrowIfHandled:NO];
     }];
 }
 @end

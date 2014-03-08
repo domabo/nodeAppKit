@@ -1,5 +1,5 @@
 {
-    "name": "node-appkit",
+    "name": "nodeappkit",
     "main": "index.js",
     "node-main": "index.js",
     "node-baseurl": "node://localhost/",

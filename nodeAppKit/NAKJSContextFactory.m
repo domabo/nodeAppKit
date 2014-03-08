@@ -26,25 +26,26 @@
 
 - (void) create: (void(^)(id))jsCallback
 {
-     _completionHandler = [jsCallback copy];
-     [self createJavascriptWebView];
-}
+#ifdef DEBUG
+    _completionHandler = [jsCallback copy];
+    [self createJavascriptWebView];
+    return;
+#else
+    _completionHandler = [jsCallback copy];
+    [self createJavascriptCore];
     
- - (void) createCore: (void(^)(id))jsCallback
- {
-        _completionHandler = [jsCallback copy];
-        [self createJavascriptCore];
+#endif
 }
-
 
 - (void) createJavascriptCore
 {
-    
     JSVirtualMachine* vm = [[JSVirtualMachine alloc]init];
     context = [[NLContext alloc] initWithVirtualMachine:vm];
     _completionHandler(context);
     _completionHandler = nil;
 }
+
+#ifdef DEBUG
 
 - (void) createJavascriptWebView
 {
@@ -91,4 +92,5 @@
     _completionHandler(context);
     _completionHandler = nil;
 }
+#endif
 @end

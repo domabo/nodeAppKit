@@ -1,3 +1,4 @@
+#ifdef DEBUG
 //
 //  NAKWebViewDebug.h
 //  The nodeAppKit Project
@@ -11,9 +12,11 @@
 #import <Foundation/Foundation.h>
 #import <Nodelike/Nodelike.h>
 
+
 @interface NAKWebViewDebug : NSObject{
 }
 - (void)attachToContext:(JSContext*)context;
 + (bool) throwIfHandled;
 + (void) setThrowIfHandled:(bool)val;
 @end
+#endif

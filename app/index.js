@@ -10,7 +10,7 @@ var app = new owinjs.app;
 
 //app.use(route);
 
-route.get('/', function(){ 
+route.get('/', function routeGetDefault(){
             console.log("GET: " +this.request.path);
             var owin = this;
             fileName = 'index.js.html';

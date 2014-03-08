@@ -17,5 +17,5 @@ typedef void (^nodeCallBack)(id error, id value);
 + (void)attachToContext:(JSContext *)context;
 + (JSValue*) createOwinContext;
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack;
-+ (void) evaluateScript:(NSString * )script;
++ (void) cancelOwinContext:(JSValue *)owinContext;
 @end

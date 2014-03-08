@@ -11,35 +11,33 @@
 #import "NAKOWIN.h"
 
 static JSContext *_context = nil;
-static dispatch_queue_t javascriptcoreQueue ;
+//static dispatch_queue_t javascriptcoreQueue ;
 
 @implementation NAKOWIN
 + (void)attachToContext:(JSContext *)context
 {
     _context = context;
-    javascriptcoreQueue = dispatch_queue_create("owinjs:javascriptcore", NULL);
+ //   javascriptcoreQueue = dispatch_queue_create("owinjs:javascriptcore", NULL);
 }
 
 + (JSValue*) createOwinContext
 {
-    return  [_context evaluateScript:@"process.owinJS.createEmptyContext();"];
+     return [_context evaluateScript:@"process.owinJS.createEmptyContext();"];
 
  }
 
-+ (void) evaluateScript:(NSString * )script
++ (void) cancelOwinContext:(JSValue *)owinContext
 {
-    dispatch_async(javascriptcoreQueue, ^{
-       [_context evaluateScript:script];
-        [NLContext runEventLoopSync];
-     });
+    [_context[@"process"][@"owinJS"][@"cancelContext"] callWithArguments:@[owinContext]];
+    [NLContext runEventLoopSync];
+    [NLContext runProcessAsyncQueue:_context];
 }
-
 
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack
 {
-    dispatch_async(javascriptcoreQueue, ^{
         [_context[@"process"][@"owinJS"][@"invokeContext"] callWithArguments:@[owinContext, callBack]];
         [NLContext runEventLoopSync];
-    });
+        [NLContext runProcessAsyncQueue:_context];
+
 }
 @end

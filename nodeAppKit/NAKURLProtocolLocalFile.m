@@ -36,7 +36,7 @@
     {
         
         NAKURLFileDecode *urlDecode = [[NAKURLFileDecode alloc] initWithURLRequest:[self request]];
-        NSLog(@"Loading %@", [urlDecode fileName]);
+        NSLog(@"internal: %@", [urlDecode fileName]);
         
         
         if ([urlDecode exists]) {
@@ -50,7 +50,6 @@
             [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
             [[self client] URLProtocol:self didLoadData:data];
             [[self client] URLProtocolDidFinishLoading:self];
-            NSLog(@"%@", [urlDecode fileName]);
         }
         else {
             NSLog(@"Missing File %@", self.request.URL);
