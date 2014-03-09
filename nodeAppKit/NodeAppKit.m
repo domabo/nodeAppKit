@@ -60,6 +60,10 @@
             });
         };
         
+        context[@"process"][@"throwHandledErrors"] = ^(bool throwIfHandled){
+            [NAKWebViewDebug setThrowIfHandled:throwIfHandled];
+        };
+        
         context[@"process"][@"doEvents"] = ^(){
             [NLContext runEventLoopSync];
             [NLContext runProcessAsyncQueue: context];

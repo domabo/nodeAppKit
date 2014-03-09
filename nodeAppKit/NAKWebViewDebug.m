@@ -155,7 +155,8 @@
     {
       return;
     }
-   
+    
+
     NSMutableArray *callStack = [[NSMutableArray alloc] init];
     
     bool tryFilePackage = NO;
@@ -179,8 +180,19 @@
         }
     }
     
+    NSString *exceptionName = @"";
+    NSString *exceptionMessage = @"";
     
-    if (([[exception valueForKey:@"message"] rangeOfString:@"no such file or directory"].location != NSNotFound) && (tryFilePackage))
+    @try {
+        exceptionName =[exception valueForKey:@"name"] ;
+        exceptionMessage =[exception valueForKey:@"message"] ;
+    }
+    @catch (NSException *e) {
+        exceptionName = (NSString*)exception;
+    }
+    
+    
+    if (([exceptionMessage rangeOfString:@"no such file or directory"].location != NSNotFound) && (tryFilePackage))
     return;
     
     
@@ -190,14 +202,14 @@
     
     NSMutableString *message = [NSMutableString stringWithCapacity:100];
     
-    [message appendFormat:@"Exception\n\nName: %@", [exception valueForKey:@"name"]];
+    [message appendFormat:@"Exception\n\nName: %@", exceptionName];
   //  NSMutableString *stack = [exception valueForKey:@"stack"];
     
     if (filename) {
         [message appendFormat:@", filename: %@", filename];
     }
     
-    [message appendFormat:@"\nMessage: %@\n\n", [exception valueForKey:@"message"]];
+    [message appendFormat:@"\nMessage: %@\n\n", exceptionMessage];
     
     NSArray* sourceLines = [source componentsSeparatedByString:@"\n"];
     NSString* sourceLine = [sourceLines objectAtIndex:(lineNumber - 1)];
@@ -237,9 +249,9 @@
     
     NSLog(@"%@", message);
     
-    [[webFrame windowObject] setValue:[frame exception] forKey:@"__GC_frame_exception"];
+   /*  [[webFrame windowObject] setValue:[frame exception] forKey:@"__GC_frame_exception"];
     
- /*   id objectRef = [[webFrame windowObject] evaluateWebScript:@"__GC_frame_exception.constructor.name"];
+   id objectRef = [[webFrame windowObject] evaluateWebScript:@"__GC_frame_exception.constructor.name"];
     [[webFrame windowObject] setValue:nil forKey:@"__GC_frame_exception"];
     
     NSLog(objectRef);*/
@@ -253,8 +265,8 @@
                           @"sourceLine" : sourceLine,
                           @"callStack" : callStack,
                           @"locals" : locals,
-                          @"exception" : [exception valueForKey:@"name"],
-                          @"description" : [exception valueForKey:@"message"]};
+                          @"exception" : exceptionName,
+                          @"description" : exceptionMessage};
     debuggerStopped = YES;
     
         double delayInSeconds = 0.1;

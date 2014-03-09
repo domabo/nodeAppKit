@@ -18,7 +18,67 @@ route.get('/', function routeGetDefault(){
           return  razor.renderViewAsync(this, fileName);
           });
 
-app.use(static('./bootstrap'));
+//app.use(static('./bootstrap'));
+var APPSELECTOR = 5;
+
+app.use(function(next, callback){
+        if (APPSELECTOR ==1)
+        {
+        
+        this.response.writeHead(200, {"Content-Type": "text/plain"});
+        this.response.end("Hello World\n");
+        next(function(err, result){callback(err,result);});
+        }
+        else return next(callback);
+        })
+
+app.use(function(next){
+        if (APPSELECTOR ==2)
+        {
+        
+        this.response.writeHead(200, {"Content-Type": "text/plain"});
+        this.response.end("Hello World 2\n");
+        return next();
+        }
+        else return next();
+        })
+
+
+app.use(function(req, res, next){
+        if (APPSELECTOR ==3)
+        {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.end("Hello World 3\n");
+        next();
+        }
+        else
+        next();
+        })
+
+
+app.use(function(err, req, res, next){
+        if (APPSELECTOR ==4)
+        {
+        if (err)
+        {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.end("Error reported in connect4: " + JSON.stringify(err));
+        } else
+        {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.end("Hello World 4\n");
+        }
+        }
+        else next();
+        })
+
+app.use(function(req, res){
+        if (APPSELECTOR ==5)
+        {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.end("Hello World 5\n");
+        }
+        })
 
 Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 800, 600);
 
