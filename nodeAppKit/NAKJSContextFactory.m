@@ -39,6 +39,7 @@
 
 - (void) createJavascriptCore
 {
+    NSLog(@"Starting javascriptcore native engine");
     JSVirtualMachine* vm = [[JSVirtualMachine alloc]init];
     context = [[NLContext alloc] initWithVirtualMachine:vm];
     _completionHandler(context);
@@ -49,6 +50,8 @@
 
 - (void) createJavascriptWebView
 {
+    NSLog(@"Starting javascriptcore embedded engine");
+    
     webView = [[WebView alloc] init];
     
     WebPreferences *webPrefs =  [WebPreferences standardPreferences];

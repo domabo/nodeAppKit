@@ -61,7 +61,9 @@
         };
         
         context[@"process"][@"throwHandledErrors"] = ^(bool throwIfHandled){
+#ifdef DEBUG
             [NAKWebViewDebug setThrowIfHandled:throwIfHandled];
+#endif
         };
         
         context[@"process"][@"doEvents"] = ^(){
@@ -71,22 +73,25 @@
         
         
         context.exceptionHandler = ^(JSContext *ctx, JSValue *e) {
-            NSLog(@"Context exception thrown: %@; stack: %@", e, [e valueForProperty:@"stack"]);
+           NSLog(@"Context exception thrown: %@; stack: %@", e, [e valueForProperty:@"stack"]);
         };
         
         [NAKOWIN attachToContext:context];
         JSGlobalContextRetain([context JSGlobalContextRef]);
         
         // RUN SCRIPTS
+#ifdef DEBUG
+
         [NAKWebViewDebug setThrowIfHandled:YES];
-        
+#endif
         NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
         
         [context evaluateScript:nodeappkitJS];
         [context evaluateScript:@"module._load(package['node-main'], null, true);"];
         [NLContext runEventLoopAsync];
-            
+#ifdef DEBUG
         [NAKWebViewDebug setThrowIfHandled:NO];
+#endif
     }];
 }
 @end

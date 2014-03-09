@@ -8,18 +8,22 @@ var owinRazor = owinjs.Razor;
 
 var app = new owinjs.app;
 
-//app.use(route);
+
+var APPSELECTOR = 200;
+
+if (APPSELECTOR ==100)
+app.use( route);
 
 route.get('/', function routeGetDefault(){
-            console.log("GET: " +this.request.path);
-            var owin = this;
-            fileName = 'index.js.html';
-         
+          console.log("GET: " +this.request.path);
+          var owin = this;
+          fileName = 'index.js.html';
+          
           return  razor.renderViewAsync(this, fileName);
           });
 
-//app.use(static('./bootstrap'));
-var APPSELECTOR = 5;
+if (APPSELECTOR ==200)
+app.use(static('./bootstrap'));
 
 app.use(function(next, callback){
         if (APPSELECTOR ==1)
@@ -83,9 +87,9 @@ app.use(function(req, res){
 Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 800, 600);
 
 /*browser.createOwinServer(function (owin, callback) {
-                         path = 'index.js.html';
-                        Razor.renderView(path, owin, callback);
-                  
-                     }).listen(); */
+ path = 'index.js.html';
+ Razor.renderView(path, owin, callback);
+ 
+ }).listen(); */
 
 
