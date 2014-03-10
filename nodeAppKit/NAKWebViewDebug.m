@@ -196,6 +196,8 @@
     return;
     
     
+    
+    
     NSDictionary* sourceLookup = [sourceIDMap objectForKey:[NSNumber numberWithInt:sourceID]];
     NSString* filename = [sourceLookup objectForKey:kSourceIDMapFilenameKey];
     NSString* source = [sourceLookup objectForKey:kSourceIDMapSourceKey];
@@ -219,6 +221,13 @@
     
     if ([sourceLine rangeOfString:@"delete Module._cache"].location != NSNotFound)
     return;
+    
+    if (([exceptionMessage rangeOfString:@"no such file or directory"].location != NSNotFound) && ([sourceLine rangeOfString:@"binding.stat"].location!= NSNotFound))
+    {
+    NSLog(@"fs stats error");
+    return;
+    }
+    
     NSMutableDictionary *locals = [[NSMutableDictionary alloc] init];
     
     WebScriptObject *scope = [[frame scopeChain] objectAtIndex:0]; // local is always first

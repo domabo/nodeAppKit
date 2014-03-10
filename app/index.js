@@ -5,9 +5,11 @@ var static = require('owinjs-static');
 var razor = require('owinjs-razor');
 var route = router();
 var owinRazor = owinjs.Razor;
+var http = require('http');
+var Promise =require('promise');
+var util = require('util');
 
 var app = new owinjs.app;
-
 
 var APPSELECTOR = 200;
 
@@ -28,24 +30,22 @@ app.use(static('./bootstrap'));
 app.use(function(next, callback){
         if (APPSELECTOR ==1)
         {
-        
         this.response.writeHead(200, {"Content-Type": "text/plain"});
         this.response.end("Hello World\n");
         next(function(err, result){callback(err,result);});
         }
         else return next(callback);
-        })
+        });
 
 app.use(function(next){
         if (APPSELECTOR ==2)
         {
-        
         this.response.writeHead(200, {"Content-Type": "text/plain"});
         this.response.end("Hello World 2\n");
         return next();
         }
         else return next();
-        })
+        });
 
 
 app.use(function(req, res, next){
@@ -57,7 +57,7 @@ app.use(function(req, res, next){
         }
         else
         next();
-        })
+        });
 
 
 app.use(function(err, req, res, next){
@@ -74,7 +74,7 @@ app.use(function(err, req, res, next){
         }
         }
         else next();
-        })
+        });
 
 app.use(function(req, res){
         if (APPSELECTOR ==5)
@@ -84,7 +84,11 @@ app.use(function(req, res){
         }
         })
 
-Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 800, 600);
+http.createServer(app.buildHttp()).listen(8080);
+
+var server1= "http://localhost:8080/";
+var server2 = "node://localhost/";
+Browser.createOwinServer(app.build()).listen(server1, 'bootstrap', 800, 600);
 
 /*browser.createOwinServer(function (owin, callback) {
  path = 'index.js.html';
@@ -92,4 +96,4 @@ Browser.createOwinServer(app.build()).listen('node://localhost', 'bootstrap', 80
  
  }).listen(); */
 
-
+console.log('Server started');

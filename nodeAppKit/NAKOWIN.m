@@ -29,14 +29,12 @@ static JSContext *_context = nil;
 + (void) cancelOwinContext:(JSValue *)owinContext
 {
     [_context[@"process"][@"owinJS"][@"cancelContext"] callWithArguments:@[owinContext]];
-    [NLContext runEventLoopSync];
     [NLContext runProcessAsyncQueue:_context];
 }
 
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack
 {
         [_context[@"process"][@"owinJS"][@"invokeContext"] callWithArguments:@[owinContext, callBack]];
-        [NLContext runEventLoopSync];
         [NLContext runProcessAsyncQueue:_context];
 
 }

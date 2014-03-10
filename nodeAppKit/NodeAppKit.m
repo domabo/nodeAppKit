@@ -60,6 +60,12 @@
             });
         };
         
+     /*   context[@"process"][@"nextTick"] = ^(JSValue * cb) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [cb callWithArguments:@[]];
+            });
+        };*/
+        
         context[@"process"][@"throwHandledErrors"] = ^(bool throwIfHandled){
 #ifdef DEBUG
             [NAKWebViewDebug setThrowIfHandled:throwIfHandled];
@@ -67,7 +73,6 @@
         };
         
         context[@"process"][@"doEvents"] = ^(){
-            [NLContext runEventLoopSync];
             [NLContext runProcessAsyncQueue: context];
         };
         
@@ -90,7 +95,7 @@
         [context evaluateScript:@"module._load(package['node-main'], null, true);"];
         [NLContext runEventLoopAsync];
 #ifdef DEBUG
-        [NAKWebViewDebug setThrowIfHandled:NO];
+        [NAKWebViewDebug setThrowIfHandled:YES];
 #endif
     }];
 }
