@@ -18,6 +18,8 @@
     bool isCancelled;
 }
     
+ //   static NSMutableArray * instanceArray;
+    
 + (BOOL)canInitWithRequest:(NSURLRequest*)theRequest
     {
         
@@ -41,6 +43,7 @@
 - (void)startLoading
 {
     isCancelled = false;
+  //  [instanceArray addObject:self];
     
     dispatch_async(dispatch_get_main_queue(), ^{
     NSLog(@"%@", [self.request.URL absoluteString]);
@@ -111,9 +114,10 @@
                 [[self client] URLProtocolDidFinishLoading:self];
             }
         }
- 
+        
+ //       [instanceArray removeObject:self];
     } ];
-    });
+  });
 }
 
 - (void)stopLoading

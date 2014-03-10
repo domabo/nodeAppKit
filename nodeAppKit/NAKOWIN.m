@@ -36,6 +36,5 @@ static JSContext *_context = nil;
 {
         [_context[@"process"][@"owinJS"][@"invokeContext"] callWithArguments:@[owinContext, callBack]];
         [NLContext runProcessAsyncQueue:_context];
-
 }
 @end
