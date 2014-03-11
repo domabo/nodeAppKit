@@ -27,12 +27,15 @@ var app = function(owin, callback){
     message.push("Call Stack");
     e.callStack.forEach(function(entry) {message.push("  " + entry);});
     console.log(message.join("\r"));
-     owin.response.writeHead(200, {"Content-Type" : "text/html"});
-     owin.response.write("<head></head>");
-     owin.response.write("<body>");
-     owin.response.write(message.join("<br>"));
-     owin.response.write(newSource);
-     owin.response.end("</body>");
+    
+    owin["owin.ResponseStatusCode"] = 200;
+    owin["owin.ResponseHeaders"]["Content-Type"] = "text/html";
+    
+     owin["owin.ResponseBody"].write("<head></head>");
+     owin["owin.ResponseBody"].write("<body>");
+     owin["owin.ResponseBody"].write(message.join("<br>"));
+     owin["owin.ResponseBody"].write(newSource);
+     owin["owin.ResponseBody"].end("</body>");
     
     callback(null);
           }

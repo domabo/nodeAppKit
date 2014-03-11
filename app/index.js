@@ -84,7 +84,7 @@ app.use(function(req, res){
         }
         })
 */
-//http.createServer(app.buildHttp()).listen(8080);
+http.createServer(app.buildHttp()).listen(8080);
 
 var server1= "http://localhost:8080/";
 var server2 = "node://localhost/";
