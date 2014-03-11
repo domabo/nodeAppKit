@@ -26,7 +26,7 @@ route.get('/', function routeGetDefault(){
 
 if (APPSELECTOR ==200)
 app.use(static('./bootstrap'));
-
+/*
 app.use(function(next, callback){
         if (APPSELECTOR ==1)
         {
@@ -76,19 +76,19 @@ app.use(function(err, req, res, next){
         else next();
         });
 
+if (APPSELECTOR ==5)
 app.use(function(req, res){
-        if (APPSELECTOR ==5)
         {
         res.writeHead(200, {"Content-Type": "text/plain"});
         res.end("Hello World 5\n");
         }
         })
-
-http.createServer(app.buildHttp()).listen(8080);
+*/
+//http.createServer(app.buildHttp()).listen(8080);
 
 var server1= "http://localhost:8080/";
 var server2 = "node://localhost/";
-Browser.createOwinServer(app.build()).listen(server1, 'bootstrap', 800, 600);
+Browser.createOwinServer(app.build()).listen(server2, 'bootstrap', 800, 600);
 
 /*browser.createOwinServer(function (owin, callback) {
  path = 'index.js.html';

@@ -16,6 +16,7 @@
     JSValue *context;
     bool isLoading;
     bool isCancelled;
+    bool headersWritten;
 }
     
  //   static NSMutableArray * instanceArray;
@@ -41,84 +42,102 @@
     }
         
 - (void)startLoading
-{
-    isCancelled = false;
-  //  [instanceArray addObject:self];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-    NSLog(@"%@", [self.request.URL absoluteString]);
-        
-    context =[NAKOWIN createOwinContext];
-    
-    NSString *path = [self.request.URL relativePath];
-    NSString *query =[self.request.URL query];
-    
-    if ([path isEqualToString: @""])
-    path = @"/";
-    
-    if (query == nil)
-    query = @"";
-    
-    context[@"owin.RequestPath"] = path;
-    context[@"owin.RequestPathBase"] = @"";
-    context[@"owin.RequestQueryString"] = query;
-    context[@"owin.RequestHeaders"]  = self.request.allHTTPHeaderFields;
-    context[@"owin.RequestMethod"] = self.request.HTTPMethod;
-    context[@"owin.RequestIsLocal"] = @TRUE;
-    context[@"owin.RequestScheme"] = [self.request.URL scheme];
-    context[@"owin.RequestProtocol"] = @"HTTP/1.1";
-    
-    if ([self.request.HTTPMethod isEqualToString: @"POST"])
     {
-        NSString *body = [NSString stringWithUTF8String:[self.request.HTTPBody bytes]];
-        context[@"owin.RequestHeaders"][@"Content-Length"] = [[NSNumber numberWithInteger:body.length] stringValue];
-        [context[@"owin.RequestBody"][@"setData"] callWithArguments:@[body]];
+        isCancelled = false;
+        //  [instanceArray addObject:self];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"%@", [self.request.URL absoluteString]);
+            
+            context =[NAKOWIN createOwinContext];
+            
+            NSString *path = [self.request.URL relativePath];
+            NSString *query =[self.request.URL query];
+            
+            if ([path isEqualToString: @""])
+            path = @"/";
+            
+            if (query == nil)
+            query = @"";
+            
+            context[@"owin.RequestPath"] = path;
+            context[@"owin.RequestPathBase"] = @"";
+            context[@"owin.RequestQueryString"] = query;
+            context[@"owin.RequestHeaders"]  = self.request.allHTTPHeaderFields;
+            context[@"owin.RequestMethod"] = self.request.HTTPMethod;
+            context[@"owin.RequestIsLocal"] = @TRUE;
+            context[@"owin.RequestScheme"] = [self.request.URL scheme];
+            context[@"owin.RequestProtocol"] = @"HTTP/1.1";
+            
+            if ([self.request.HTTPMethod isEqualToString: @"POST"])
+            {
+         //       NSString *body = [NSString stringWithUTF8String:[self.request.HTTPBody bytes]];
+                NSString *body =[[NSString alloc] initWithData:[self.request.HTTPBody bytes] encoding:NSUTF8StringEncoding];
+                
+                context[@"owin.RequestHeaders"][@"Content-Length"] = [[NSNumber numberWithInteger:body.length] stringValue];
+                [context[@"owin.RequestBody"][@"setData"] callWithArguments:@[body]];
+            }
+            isLoading= YES;
+            headersWritten=NO;
+            
+            [NAKOWIN createResponseStream:context callBack:^ void (id error, NSString* buf){
+                if (isCancelled)
+                return;
+                
+                if (!headersWritten)
+                [self writeHeaders];
+                NSData * data = [buf dataUsingEncoding:NSUTF8StringEncoding];
+                [[self client] URLProtocol:self didLoadData:data];
+            }];
+            
+            [NAKOWIN invokeAppFunc:context callBack:^ void (id error, id value){
+                if (isCancelled)
+                return;
+                if (error != [NSNull null])
+                {
+                    NSLog(@"Unhandled Server Error Occurred");
+                }
+                else
+                {
+                    if (!headersWritten)
+                    [self writeHeaders];
+                    
+                    isLoading= NO;
+                    [[self client] URLProtocolDidFinishLoading:self];
+                }
+            }];
+        });
     }
-    isLoading= YES;
-    [NAKOWIN invokeAppFunc:context callBack:^ void (id error, id value){
-        if (isCancelled)
-          return;
-        if (error != [NSNull null])
+  
+    
+- (void)writeHeaders
+    {
+        headersWritten=YES;
+        NSDictionary *headers = [context[@"owin.ResponseHeaders"] toDictionary];
+        NSString *version = [context[@"owin.ResponseProtocol"] toString];
+        NSInteger statusCode = [[context[@"owin.ResponseStatusCode"] toString] longLongValue] ;
+        
+        if (statusCode == 302)
         {
-            NSLog(@"Unhandled Server Error Occurred");
+            NSURL *url = [NSURL URLWithString: headers[@"location"]];
+            NSLog(@"Redirection location to %@", url);
+            
+            NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:url statusCode: statusCode HTTPVersion:version headerFields:headers];
+            
+            [[self client] URLProtocol:self wasRedirectedToRequest:[NSURLRequest requestWithURL:url] redirectResponse:response];
+            isLoading= NO;
+            [[self client] URLProtocolDidFinishLoading:self];
+            
         }
         else
         {
-            NSDictionary *headers = [context[@"owin.ResponseHeaders"] toDictionary];
-            NSString *version = [context[@"owin.ResponseProtocol"] toString];
-            NSString *dataString = [context[@"owin.ResponseBody"] toString];
-            NSInteger statusCode = [[context[@"owin.ResponseStatusCode"] toString] longLongValue] ;
             
-            if (statusCode == 302)
-            {
-                NSURL *url = [NSURL URLWithString: headers[@"location"]];
-                NSLog(@"Redirection location to %@", url);
-                
-                NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:url statusCode: statusCode HTTPVersion:version headerFields:headers];
-                
-                [[self client] URLProtocol:self wasRedirectedToRequest:[NSURLRequest requestWithURL:url] redirectResponse:response];
-                isLoading= NO;
-                [[self client] URLProtocolDidFinishLoading:self];
-                
-            }
-            else
-            {
-                
-                NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode: statusCode HTTPVersion:version headerFields:headers];
-                
-                NSData *data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
-                
-                [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-                [[self client] URLProtocol:self didLoadData:data];
-                isLoading= NO;
-                [[self client] URLProtocolDidFinishLoading:self];
-            }
-        }
-        
- //       [instanceArray removeObject:self];
-    } ];
-  });
-}
+            NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode: statusCode HTTPVersion:version headerFields:headers];
+            
+            [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+         }
+    }
+    
 
 - (void)stopLoading
 {

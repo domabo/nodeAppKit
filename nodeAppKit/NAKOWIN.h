@@ -18,4 +18,5 @@ typedef void (^nodeCallBack)(id error, id value);
 + (JSValue*) createOwinContext;
 + (void) invokeAppFunc:(JSValue *)owinContext callBack:(nodeCallBack)callBack;
 + (void) cancelOwinContext:(JSValue *)owinContext;
++ (void) createResponseStream:(JSValue *)owinContext callBack:(nodeCallBack)callBack;
 @end
