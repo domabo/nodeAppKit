@@ -10,13 +10,14 @@
 
 #import "NAKURLProtocolCustom.h"
 #import "NAKOWIN.h"
+#import <Nodelike/NLBuffer.h>
 
 @implementation NAKURLProtocolCustom
 {
-    JSValue *context;
+    __block JSValue *context;
     bool isLoading;
     bool isCancelled;
-    bool headersWritten;
+  __block  bool headersWritten;
 }
     
  //   static NSMutableArray * instanceArray;
@@ -45,14 +46,16 @@
     {
         isCancelled = false;
         //  [instanceArray addObject:self];
+        __block NAKURLProtocolCustom *this = self;
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"%@", [self.request.URL absoluteString]);
+            NSLog(@"%@", [this.request.URL absoluteString]);
             
             context =[NAKOWIN createOwinContext];
             
-            NSString *path = [self.request.URL relativePath];
-            NSString *query =[self.request.URL query];
+            NSString *path = [this.request.URL relativePath];
+            NSString *query =[this.request.URL query];
             
             if ([path isEqualToString: @""])
             path = @"/";
@@ -63,16 +66,16 @@
             context[@"owin.RequestPath"] = path;
             context[@"owin.RequestPathBase"] = @"";
             context[@"owin.RequestQueryString"] = query;
-            context[@"owin.RequestHeaders"]  = self.request.allHTTPHeaderFields;
-            context[@"owin.RequestMethod"] = self.request.HTTPMethod;
+            context[@"owin.RequestHeaders"]  = this.request.allHTTPHeaderFields;
+            context[@"owin.RequestMethod"] = this.request.HTTPMethod;
             context[@"owin.RequestIsLocal"] = @TRUE;
-            context[@"owin.RequestScheme"] = [self.request.URL scheme];
+            context[@"owin.RequestScheme"] = [this.request.URL scheme];
             context[@"owin.RequestProtocol"] = @"HTTP/1.1";
             
-            if ([self.request.HTTPMethod isEqualToString: @"POST"])
+            if ([this.request.HTTPMethod isEqualToString: @"POST"])
             {
-         //       NSString *body = [NSString stringWithUTF8String:[self.request.HTTPBody bytes]];
-                NSString *body =[[NSString alloc] initWithData:[self.request.HTTPBody bytes] encoding:NSUTF8StringEncoding];
+         //       NSString *body = [NSString stringWithUTF8String:[this.request.HTTPBody bytes]];
+                NSString *body =[[NSString alloc] initWithData:[this.request.HTTPBody bytes] encoding:NSUTF8StringEncoding];
                 
                 context[@"owin.RequestHeaders"][@"Content-Length"] = [[NSNumber numberWithInteger:body.length] stringValue];
                 [context[@"owin.RequestBody"][@"setData"] callWithArguments:@[body]];
@@ -80,15 +83,31 @@
             isLoading= YES;
             headersWritten=NO;
             
-            [NAKOWIN createResponseStream:context callBack:^ void (id error, NSString* buf){
-                if (isCancelled)
-                return;
-                
+           [NAKOWIN createResponseStream:context];
+            
+            context[@"owin.ResponseBody"][@"_writeBuffer"] = ^{
+                JSValue *buffer = context[@"owin._ResponseBodyChunk"];
+                int size = [NLBuffer getLength:buffer];
+                NSData * data = [NSData dataWithBytes:[NLBuffer getData:buffer ofSize:size] length:size ];
                 if (!headersWritten)
-                [self writeHeaders];
-                NSData * data = [buf dataUsingEncoding:NSUTF8StringEncoding];
+                [this writeHeaders];
+                
+                [[this client] URLProtocol:this didLoadData:data];
+                
+                data = nil;
+            };
+            
+            context[@"owin.ResponseBody"][@"_writeString"] = ^{
+                NSString *str = [context[@"owin._ResponseBodyChunk"] toString];
+                NSData * data = [str dataUsingEncoding:NSUTF8StringEncoding];
+                if (!headersWritten)
+                [this writeHeaders];
+                
                 [[self client] URLProtocol:self didLoadData:data];
-            }];
+                
+                data = nil;
+            };
+
             
             [NAKOWIN invokeAppFunc:context callBack:^ void (id error, id value){
                 if (isCancelled)
@@ -100,10 +119,18 @@
                 else
                 {
                     if (!headersWritten)
-                    [self writeHeaders];
+                    [this writeHeaders];
+                    
+                    NSString *str = [context[@"owin.ResponseBody"] toString];
+                    NSData * data = [str dataUsingEncoding:NSUTF8StringEncoding];
+                    if (!headersWritten)
+                    [this writeHeaders];
+                    
+                    [[self client] URLProtocol:self didLoadData:data];
+                    
                     
                     isLoading= NO;
-                    [[self client] URLProtocolDidFinishLoading:self];
+                    [[this client] URLProtocolDidFinishLoading:this];
                 }
             }];
         });

@@ -23,9 +23,9 @@ static JSContext *_context = nil;
         return [_context evaluateScript:@"process.owinJS.createEmptyContext();"];
     }
     
-+ (void) createResponseStream:(JSValue *)owinContext callBack:(nodeCallBack)callBack
++ (void) createResponseStream:(JSValue *)owinContext 
     {
-        [_context[@"process"][@"owinJS"][@"createResponseStream"] callWithArguments:@[owinContext, callBack]];
+        [_context[@"process"][@"owinJS"][@"createResponseStream"] callWithArguments:@[owinContext]];
         [NLContext runProcessAsyncQueue:_context];
     }
     

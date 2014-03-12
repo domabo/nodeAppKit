@@ -28,7 +28,9 @@
 {
 #ifdef DEBUG
     _completionHandler = [jsCallback copy];
-    [self createJavascriptWebView];
+   [self createJavascriptWebView];
+  //  [self createJavascriptCore];
+    
     return;
 #else
     _completionHandler = [jsCallback copy];

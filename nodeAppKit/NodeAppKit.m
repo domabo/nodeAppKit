@@ -86,13 +86,12 @@
         
         // RUN SCRIPTS
 #ifdef DEBUG
-
         [NAKWebViewDebug setThrowIfHandled:YES];
 #endif
         NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
         
         [context evaluateScript:nodeappkitJS];
-        [context evaluateScript:@"module._load(package['node-main'], null, true);"];
+        [context evaluateScript:@"module._load(process.package['node-main'], null, true);"];
         [NLContext runEventLoopAsync];
 #ifdef DEBUG
         [NAKWebViewDebug setThrowIfHandled:YES];
