@@ -30,7 +30,7 @@
         NSBundle *mainBundle = [NSBundle mainBundle];
         NSString *resourcePath = [mainBundle resourcePath];
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/app"];
-        NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/node_modules"];
+        NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/app/node_modules"];
         NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/app-shared/OwinJS"];
         NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/app-shared/node_modules"];
         

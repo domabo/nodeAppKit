@@ -1,4 +1,4 @@
-var Browser = require('browser');
+var Browser = require('owinjs-browser');
 var Promise = require('promise');
 var path = require('path');
 

@@ -1,4 +1,4 @@
-var Browser = require('browser');
+var Browser = require('owinjs-browser');
 var owinjs = require('owinjs');
 var router = require('owinjs-router');
 var static = require('owinjs-static');
@@ -25,7 +25,7 @@ route.get('/', function routeGetDefault(){
           });
 
 if (APPSELECTOR ==200)
-app.use(static('./bootstrap'));
+app.use(static('./bootstrap', {sync:true}));
 /*
 app.use(function(next, callback){
         if (APPSELECTOR ==1)
