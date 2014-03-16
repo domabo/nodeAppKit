@@ -26,33 +26,56 @@
     [NAKWebView createSplashWindow: @"internal://localhost/owinjs-splash/views/StartupSplash.html" width:800 height:600];
     
     [JSContextFactory create: ^ void (JSContext *context){
-      
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         NSBundle *mainBundle = [NSBundle mainBundle];
+        
+        NSString *appPath = [[mainBundle bundlePath] stringByDeletingLastPathComponent];
         NSString *resourcePath = [mainBundle resourcePath];
         NSString *webPath = [resourcePath stringByAppendingPathComponent:@"/app"];
         NSString *nodeModulePath = [resourcePath stringByAppendingPathComponent:@"/app/node_modules"];
         NSString *nodeModulePathWeb = [resourcePath stringByAppendingPathComponent:@"/app-shared/OwinJS"];
         NSString *nodeModulePathWeb2 = [resourcePath stringByAppendingPathComponent:@"/app-shared/node_modules"];
         
-        NSString *resPaths = [[[[[[[[webPath stringByAppendingString:@":"]
-                                    stringByAppendingString:nodeModulePathWeb]
-                                   stringByAppendingString:@":"]
-                                  stringByAppendingString: nodeModulePathWeb2 ]
-                                 stringByAppendingString:@":"]
-                                stringByAppendingString: nodeModulePath ]
-                               stringByAppendingString:@":"]
-                              stringByAppendingString:resourcePath];
+        NSString *appModulePath = [appPath stringByAppendingPathComponent:@"/node_modules"];
         
-        NSString *index = [mainBundle pathForResource:@"package" ofType:@"json" inDirectory:@"app"];
+        NSString *externalPackage = [appPath stringByAppendingPathComponent:@"/package.json"];
+        NSString *embeddedPackage = [webPath stringByAppendingPathComponent:@"/package.json"];
         
-        if (!index)
+        NSString *resPaths;
+        
+        if ([fileManager fileExistsAtPath:externalPackage]){
+            context[@"process"][@"workingDirectory"] = appPath;
+            
+              resPaths = [[[[[[[[resourcePath stringByAppendingString:@":"]
+                              stringByAppendingString:appPath]
+                             stringByAppendingString:@":"]
+                            stringByAppendingString: nodeModulePathWeb ]
+                           stringByAppendingString:@":"]
+                          stringByAppendingString: nodeModulePathWeb2 ]
+                         stringByAppendingString:@":"]
+                        stringByAppendingString:appModulePath];
+        }
+        else
         {
-            NSLog(@"Missing package.json in main bundle /Resources/app");
-            return;
+            if (![fileManager fileExistsAtPath:embeddedPackage])
+            {
+                NSLog(@"Missing package.json in main bundle /Resources/app");
+                return;
+            }
+            context[@"process"][@"workingDirectory"] = webPath;
+            
+            resPaths = [[[[[[[[resourcePath stringByAppendingString:@":"]
+                              stringByAppendingString:webPath]
+                             stringByAppendingString:@":"]
+                            stringByAppendingString: nodeModulePathWeb ]
+                           stringByAppendingString:@":"]
+                          stringByAppendingString: nodeModulePathWeb2 ]
+                         stringByAppendingString:@":"]
+                        stringByAppendingString:nodeModulePath];
         }
         
         context[@"process"][@"env"][@"NODE_PATH"] = resPaths;
-        context[@"process"][@"workingDirectory"] = webPath;
         context[@"process"][@"createWindow"] = ^(NSString* url, NSString* title, int width, int height){
             dispatch_async(dispatch_get_main_queue(), ^{
                 [NAKWebView createWindow: url title:title width:width height:height];
@@ -91,7 +114,7 @@
         NSString *nodeappkitJS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"nodeappkit" ofType:@"js"] encoding:(NSUTF8StringEncoding) error:NULL];
         
         [context evaluateScript:nodeappkitJS];
-        [context evaluateScript:@"module._load(process.package['node-main'], null, true);"];
+        [context evaluateScript:@"module._load(process.package['main'], null, true);"];
         [NLContext runEventLoopAsync];
 #ifdef DEBUG
         [NAKWebViewDebug setThrowIfHandled:YES];

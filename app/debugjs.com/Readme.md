@@ -1,5 +1,0 @@
-
-# debugjs.com
-
-  debugjs app
-
