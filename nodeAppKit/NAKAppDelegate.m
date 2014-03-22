@@ -20,7 +20,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"AMainMenu"], *subMenu;
     
     subMenu = [[NSMenu alloc] initWithTitle:@"domaba"];
@@ -31,6 +32,7 @@
     [subMenu addItemWithTitle:@"Debug" action:@selector(Debug:) keyEquivalent:@"d"];
                                                        
     [[NSApplication sharedApplication] setMainMenu:menu];
+    });
     
     @autoreleasepool {
         nodeAppKit = [[NodeAppKit alloc] init];

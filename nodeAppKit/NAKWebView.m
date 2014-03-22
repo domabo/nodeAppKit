@@ -130,8 +130,8 @@ static WebView *debugWebView = nil;
         NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
         [[webView mainFrame] loadRequest:requestObj];
         
-        [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"WebKitDeveloperExtras"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+ //       [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"WebKitDeveloperExtras"];
+   //     [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
 + (void) closeSplashWindow

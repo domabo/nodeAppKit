@@ -1,0 +1,52 @@
+@{
+    layout = "layout.js.html";
+    viewBag.Title = "Todo App";
+    var todos = [{name: "hello"}];
+}
+  <h1>Todo List</h1>
+  <p>You have <strong>@todos.length</strong> Todo Items!</p>
+  <p><a href="/todo/new">Create a ToDo</a></p>
+  <ul id="todos">
+      @{
+  todos.forEach(function(todo) {
+   <li>
+          <strong>@todo.name</strong>
+          <a href="/todo/@todo.id">View Details</a>
+          <a href="/todo/edit/@todo.id">Edit</a>
+          <a href="/todo/delete/@todo.id">Delete</a>
+   </li>
+  });
+  }
+</ul>
+
+  <div class="example">
+        <h2 class="example-title">Buttons</h2>
+        <div class="row">
+          <div class="col-md-3">
+            <button type="button" class="btn btn-block">Normal</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-default btn-block">Default</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-primary btn-block">Primary</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-success btn-block">Success</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <button type="button" class="btn btn-info btn-block">Info</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-warning btn-block">Warning</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-danger btn-block">Danger</button>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-link btn-block">Link</button>
+          </div>
+        </div>
+      </div>

@@ -121,14 +121,6 @@
                     if (!headersWritten)
                     [this writeHeaders];
                     
-                    NSString *str = [context[@"owin.ResponseBody"] toString];
-                    NSData * data = [str dataUsingEncoding:NSUTF8StringEncoding];
-                    if (!headersWritten)
-                    [this writeHeaders];
-                    
-                    [[self client] URLProtocol:self didLoadData:data];
-                    
-                    
                     isLoading= NO;
                     [[this client] URLProtocolDidFinishLoading:this];
                 }

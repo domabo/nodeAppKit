@@ -15,7 +15,7 @@
     
 + (BOOL)canInitWithRequest:(NSURLRequest*)theRequest
     {
-        
+       
         if (theRequest.URL.host == nil)
         return NO;
         
@@ -36,12 +36,11 @@
     {
         
         NAKURLFileDecode *urlDecode = [[NAKURLFileDecode alloc] initWithURLRequest:[self request]];
-        NSLog(@"internal: %@", [urlDecode fileName]);
         
         
         if ([urlDecode exists]) {
+            NSLog(@"internal://%@", [urlDecode fileName]);
             NSData *data =  [NSData dataWithContentsOfFile:[urlDecode resourcePath]];
-            
             NSURLResponse *response = [[NSURLResponse alloc] initWithURL:[[self request] URL]
                                                                 MIMEType:[urlDecode mimeType]
                                                    expectedContentLength:[data length]
