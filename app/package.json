@@ -1,0 +1,17 @@
+{
+    "name": "nodeappkit",
+    "main": "index.js",
+    "node-main": "",
+    "node-baseurl": "internal://localhost/default.html",
+    "node-splashtime": 1000,
+    "description": "Default app -- delete me",
+    "author": "OwinJS",
+    "version": "1.0.0",
+    "repository": "https://github.com/OwinJS/nodeAppKit",
+    "dependencies": {   }  ,
+     "window": {
+        "title": "Default Application",
+        "width": 800,
+        "height": 600
+    }
+}

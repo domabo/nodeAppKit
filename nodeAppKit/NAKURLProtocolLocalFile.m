@@ -34,12 +34,16 @@
     
 - (void)startLoading
     {
+        if ([[[[self request] URL] absoluteString]  isEqual: @"internal://close"])
+        {
+           [[NSApplication sharedApplication] terminate:nil];
+            return;
+        }
         
         NAKURLFileDecode *urlDecode = [[NAKURLFileDecode alloc] initWithURLRequest:[self request]];
         
-        
         if ([urlDecode exists]) {
-            NSLog(@"internal://%@", [urlDecode fileName]);
+            NSLog(@"%@", [[[self request] URL] absoluteString]);
             NSData *data =  [NSData dataWithContentsOfFile:[urlDecode resourcePath]];
             NSURLResponse *response = [[NSURLResponse alloc] initWithURL:[[self request] URL]
                                                                 MIMEType:[urlDecode mimeType]

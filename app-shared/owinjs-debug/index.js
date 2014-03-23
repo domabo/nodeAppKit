@@ -1,7 +1,6 @@
-var Promise = require('promise');
 var path = require('path');
 
-var app = function(owin, callback){
+var app = function(owin){
     var e = process.debugException();
     var fileName = e.locals['__filename'];
     var lines = e.source.split("\n");
@@ -35,8 +34,7 @@ var app = function(owin, callback){
      owin["owin.ResponseBody"].write(message.join("<br>"));
      owin["owin.ResponseBody"].write(newSource);
      owin["owin.ResponseBody"].end("</body>");
-    
-    callback(null);
+    return null;
           }
 
 global.Browser.createServer(app,"debug").listen("hidden");
