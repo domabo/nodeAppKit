@@ -224,7 +224,6 @@
     
     if (([exceptionMessage rangeOfString:@"no such file or directory"].location != NSNotFound) && ([sourceLine rangeOfString:@"binding.stat"].location!= NSNotFound))
     {
-    NSLog(@"fs stats error");
     return;
     }
     

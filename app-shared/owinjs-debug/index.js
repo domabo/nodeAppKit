@@ -1,4 +1,3 @@
-var Browser = require('owinjs-browser');
 var Promise = require('promise');
 var path = require('path');
 
@@ -40,4 +39,4 @@ var app = function(owin, callback){
     callback(null);
           }
 
-Browser.createOwinServer(app,"debug").listen("hidden");
+global.Browser.createServer(app,"debug").listen("hidden");
