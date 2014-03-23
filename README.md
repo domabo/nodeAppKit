@@ -86,13 +86,15 @@ Get the Cocoa Pod dependencies
 pod install`
 ```
 
-Replace all the files in the /web directory with your node.js application;  even though it runs on the mac/pc/device, write it as if it is server side
+Replace all the files in the /app directory with your node.js application;  even though it runs on the mac/pc/device, write it as if it is server side
 
 `package.json` and `index.js` contain the configuration and bootstrap code;  use `npm install` from the /web folder to install any node dependencies
 
 use `require('owinjs')` instead of or in addition to `require('http')`
 
 Compile in Xcode and Archive/Validate/Distribute for local applications and iTunes App Store.
+
+For debugging purposes, just place a copy of the executable nodeAppKit.app in any folder containing an OwinJS application and run.  If a package.json file is found in the same directory it will execute the app (in compiled in debug mode only for security reasons).
 
 ### Roadmap
 
