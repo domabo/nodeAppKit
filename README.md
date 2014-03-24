@@ -2,14 +2,16 @@
 
 ## Overview: A Native Web Application Kit
 
-**nodeAppKit** is a lean and mean app development kit for node.js-based desktop **and** mobile client applications;  it's based on node.js, but instead of using a separate embedded V8 engine or the blink chromium renderer, nodeAppKit just uses the native javascript and html5 engines of the host operating system.  
+**nodeAppKit** is a lean and mean app development kit for node.js-based desktop **and** mobile client applications;  it's based on node.js, but instead of using a separate embedded V8 engine or the blink chromium renderer, nodeAppKit just uses the native javascript and html5 engines of the host operating system. 
 
 Most modern operatings systems (OSX 10.9+, Windows 8.1+, modern Linux distributions, ioS 5+, ANDROID) now contain a high performance HTML5 rendering and javascript engines, often based on the same open source WebKit origin of Blink and V8.   
 
 In the past, version disparity made a framework like nodeAppKit impractic, but now it makes for very lean, fast loading modern apps, that are app-store compatible out of the box.
 
+Check out the [/app](https://github.com/OwinJS/nodeAppKit/tree/master/app) folder or the [demo app](https://github.com/OwinJS/owinjs-demo) to see how to write an app.
+
 ### Screenshot
-[![image](https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png)](https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png)
+[![image](https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png)](https://github.com/OwinJS/owinjs-demo)
 
 Write once, deploy anywhere: desktop, mobile: windows/RT/phone, OSX/iOS, linux, android, **AND tradititional node.js server/client browser**, all with the same code.  You no longer need to maintain separate server and client versions of modules, or package some with Browserify/Bower/Component.io and some with NPM.
 
