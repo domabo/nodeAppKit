@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,17 +16,18 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>nodeAppKit</h1>
-        <p>nodeAppKit: mobile and desktop apps made simple with node.js and the Native Web.</p>
-
-        <p class="view"><a href="https://github.com/OwinJS/nodeAppKit">View the Project on GitHub <small>OwinJS/nodeAppKit</small></a></p>
-
+        <h1 class="header">nodeAppKit</h1>
+        <p class="header">nodeAppKit: lean and mean mobile and desktop apps using node.js and the native web</p>
 
         <ul>
-          <li><a href="https://github.com/OwinJS/nodeAppKit/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/OwinJS/nodeAppKit/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/OwinJS/nodeAppKit">View On <strong>GitHub</strong></a></li>
+          <li class="download"><a class="buttons" href="https://github.com/OwinJS/nodeAppKit/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/OwinJS/nodeAppKit/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/OwinJS/nodeAppKit">View On GitHub</a></li>
         </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/OwinJS">OwinJS</a></p>
+
+
       </header>
       <section>
         <p><img src="https://raw.github.com/OwinJS/nodeAppKit/master/app-shared/owinjs-splash/images/nodeAppKit.png" alt="nodeAppKit"></p>
@@ -33,16 +35,18 @@
 <h2>
 <a name="overview-a-native-web-application-kit" class="anchor" href="#overview-a-native-web-application-kit"><span class="octicon octicon-link"></span></a>Overview: A Native Web Application Kit</h2>
 
-<p><strong>nodeAppKit</strong> is a lean and mean app development kit for node.js-based desktop <strong>and</strong> mobile client applications;  it's based on node.js, but instead of using a separate embedded V8 engine or the blink chromium renderer, nodeAppKit just uses the native javascript and html5 engines of the host operating system.  </p>
+<p><strong>nodeAppKit</strong> is a lean and mean app development kit for node.js-based desktop <strong>and</strong> mobile client applications;  it's based on node.js, but instead of using a separate embedded V8 engine or the blink chromium renderer, nodeAppKit just uses the native javascript and html5 engines of the host operating system. </p>
 
 <p>Most modern operatings systems (OSX 10.9+, Windows 8.1+, modern Linux distributions, ioS 5+, ANDROID) now contain a high performance HTML5 rendering and javascript engines, often based on the same open source WebKit origin of Blink and V8.   </p>
 
 <p>In the past, version disparity made a framework like nodeAppKit impractic, but now it makes for very lean, fast loading modern apps, that are app-store compatible out of the box.</p>
 
+<p>Check out the <a href="https://github.com/OwinJS/nodeAppKit/tree/master/app">/app</a> folder or the <a href="https://github.com/OwinJS/owinjs-demo">demo app</a> to see how to write an app.</p>
+
 <h3>
 <a name="screenshot" class="anchor" href="#screenshot"><span class="octicon octicon-link"></span></a>Screenshot</h3>
 
-<p><a href="https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png"><img src="https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png" alt="image"></a></p>
+<p><a href="https://github.com/OwinJS/owinjs-demo"><img src="https://raw.githubusercontent.com/OwinJS/owinjs-demo/master/owinjs-demo.png" alt="image"></a></p>
 
 <p>Write once, deploy anywhere: desktop, mobile: windows/RT/phone, OSX/iOS, linux, android, <strong>AND tradititional node.js server/client browser</strong>, all with the same code.  You no longer need to maintain separate server and client versions of modules, or package some with Browserify/Bower/Component.io and some with NPM.</p>
 
@@ -170,11 +174,10 @@
 <p>nodeAppKit container framework hand-coded by OwinJS;  see frameworks above for respective authorship of the core components</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/OwinJS">OwinJS</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>
