@@ -1,3 +1,9 @@
+******DO NOT USE** 
+
+See **{NK} NodeKit** at [nodekit-io/nodekit](https://github.com/nodekit-io/nodekit) for the full working replacement.   This was partly a rename and partly a major refactoring, but the Windows and other platform code will be re-used, so keeping this repository open for a bit.
+
+********
+
 ![nodeAppKit](https://raw.github.com/OwinJS/nodeAppKit/master/app-shared/owinjs-splash/images/nodeAppKit.png)
 
 ## Overview: A Native Web Application Kit
